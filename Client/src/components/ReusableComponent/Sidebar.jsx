@@ -29,9 +29,9 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
   };
 
   const menuItems = [
-    { id: 1, text: "Dashboard", icon: <DashboardIcon />,url:"/course"},
+    { id: 1, text: "Dashboard", icon: <DashboardIcon />,url:"/"},
     { id: 2, text: "Course", icon: <SchoolIcon /> ,url:"/course"},
-    { id: 3, text: "Referral Management", icon: <PeopleIcon /> ,url:"/course"}
+    { id: 3, text: "Referral Management", icon: <PeopleIcon /> ,url:"/course"},
   ];
 
   const logoutItem = { id: 4, text: "Log Out", icon: <LogoutIcon /> };
@@ -97,7 +97,7 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
                   backgroundColor: hoveredItem === item.id ? "white" : "black",
                   borderRadius: hoveredItem === item.id ? "10px" : "0", // Apply borderRadius on hover
                   transition: "all 0.3s ease",
-                  marginBottom: "12px"
+                  marginBottom: "12px "
                 }}
                 onMouseEnter={() => handleMouseEnter(item.id)}
                 onMouseLeave={() => handleMouseLeave()}

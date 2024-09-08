@@ -12,59 +12,52 @@ import { Box } from "@mui/material";
 import ManageCoursePage from "./components/courseManagment/courseManagment";
 
 function App() {
-  const [isHover, setIsHover] = useState(true);
+    const [isHover, setIsHover] = useState(true);
 
-  const mouseOnEnter = () => {
-    setIsHover(false);
-  };
-  const mouseOnLeave = () => {
-    setIsHover(true);
-  };
-  return (
-    <>
-      <ToastContainer />
-      <BrowserRouter>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "250px 1fr",
-            width: "100vw", 
-            overflowX: "hidden", 
-      
-          }}
-        >
-          <Box
-            sx={{
-              width: "100%"
-            }}
-          >
-            <SidebarComponent
-              mouseOnEnter={mouseOnEnter}
-              mouseOnLeave={mouseOnLeave}
-              isHover={isHover}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: "100%"
-            }}
-          >
-            <Header />
+    const mouseOnEnter = () => {
+        setIsHover(false);
+    };
+    const mouseOnLeave = () => {
+        setIsHover(true);
+    };
+    return (
+        <>
+            <ToastContainer />
+            <BrowserRouter>
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "250px 1fr",
+                        width: "100vw",
+                        overflowX: "hidden",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "100%",
+                        }}
+                    >
+                        <SidebarComponent mouseOnEnter={mouseOnEnter} mouseOnLeave={mouseOnLeave} isHover={isHover} />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: "100%",
+                        }}
+                    >
+                        <Header />
 
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              {/* <Route path="/home" element={<AdminPanel />} /> */}
-              <Route path="/" element={<CourseTabs />} />
-              <Route path="/course" element={<CoursePage />} />
-              <Route path="/courseManagment" element={<ManageCoursePage />} />
-
-
-            </Routes>
-          </Box>
-        </Box>
-      </BrowserRouter>
-    </>
-  );
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
+                            {/* <Route path="/home" element={<AdminPanel />} /> */}
+                            <Route path="/" element={<CourseTabs />} />
+                            <Route path="/course" element={<CoursePage />} />
+                            <Route path="/courseManagment" element={<ManageCoursePage />} />
+                        </Routes>
+                    </Box>
+                </Box>
+            </BrowserRouter>
+        </>
+    );
 }
 
 export default App;
