@@ -1,0 +1,13 @@
+//  Course create Constants
+
+export const COURSE_CREATE_REQUEST = "COURSE_CREATE_REQUEST";
+export const COURSE_CREATE_SUCCESS = "COURSE_CREATE_SUCCESS";
+export const COURSE_CREATE_ERR = "COURSE_CREATE_ERR ";
+
+
+//  Course find Constants
+
+export const COURSE_FIND_REQUEST = "COURSE_FIND_REQUEST";
+export const COURSE_FIND_SUCCESS = "COURSE_FIND_SUCCESS";
+export const COURSE_FIND_ERR = "COURSE_FIND_ERR ";
+
