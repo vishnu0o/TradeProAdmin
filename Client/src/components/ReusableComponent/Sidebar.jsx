@@ -40,7 +40,7 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
                         justifyContent: "space-between",
                         position: "fixed",
                         transition: ".3s ease",
-                        // overflow: "hidden",
+                        overflow: "hidden",
                     },
                     "& :hover": {
                         width: "250px",
@@ -58,7 +58,13 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
                                 height: 44,
                             }}
                         />
-                        <Box sx={{ color: "white", ml: 2, display: isHover ? "none" : "block" }}>
+                        <Box
+                            sx={{
+                                color: "white",
+                                ml: 2,
+                                display: isHover ? "none" : "block", // visible the content on hover
+                            }}
+                        >
                             <Typography sx={{ fontWeight: 800, fontSize: "18px" }}>TRADEPRO</Typography>
                             <Typography sx={{ textAlign: "center", fontWeight: 200, fontSize: "15px" }}>ACADEMY</Typography>
                         </Box>

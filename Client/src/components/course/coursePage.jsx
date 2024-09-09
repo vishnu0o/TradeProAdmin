@@ -45,15 +45,16 @@ function CoursePage() {
     }, [dispatch]);
 
     console.log(courseFindSuccess, "courseFindSuccess");
+    console.log(course);
     return (
         <>
-            <Box sx={{ mt: 2 ,ml:2 }}>
+            <Box sx={{ mt: 2, ml: 2 }}>
                 <SubmitButton title="Create New Course" submit="" widthSize="209px" heightSize="48px" type="click" handleSubmit={() => setOpen(true)} />
                 <Box sx={{ padding: "24px" }}>
                     {/* Course Cards */}
                     <Grid container spacing={3}>
                         {course?.map((value) => (
-                            <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={4} key={value._id}>
                                 <Card
                                     sx={{
                                         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.1)",
@@ -79,7 +80,7 @@ function CoursePage() {
                                                     backgroundColor: "rgba(102, 16, 242, 0.04)",
                                                 },
                                             }}
-                                            onClick={() => navigate("/courseManagment")}
+                                            onClick={() => navigate(`/courseManagment?id=${value._id}`)}
                                         >
                                             Manage Course
                                         </Button>

@@ -45,6 +45,8 @@ function App() {
                     <Box
                         sx={{
                             width: "100%",
+                            minHeight:"100vh",
+                            backgroundColor:"#f4f4f4"
                         }}
                     >
                         <Header />
