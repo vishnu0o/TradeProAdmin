@@ -27,12 +27,15 @@ function App() {
                 <Box
                     sx={{
                         display: "grid",
-                        gridTemplateColumns: "250px 1fr",
+                        gridTemplateColumns: isHover ? "80px 1fr" : "250px 1fr",
                         width: "100vw",
                         overflowX: "hidden",
+                        transition:".3s ease"
                     }}
+                    
                 >
                     <Box
+                        className="sideBar_box"
                         sx={{
                             width: "100%",
                         }}

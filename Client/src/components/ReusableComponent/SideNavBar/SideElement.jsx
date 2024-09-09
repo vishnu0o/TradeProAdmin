@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const SidebarContainer = styled.div`
   position: fixed;
   top: 0;
-  width: ${(props) => (props.act ? "0px" : "58px")};
+  width: ${(props) => (props.act ? "0px" : "158px")};
   padding: ${(props) => (props.act ? "0px" : "1rem 1rem 0 0")};
   height: 100vh;
   background-color: var(--first-color);
@@ -14,7 +14,7 @@ export const SidebarContainer = styled.div`
     padding: 1rem 1rem 0 0;
     background-color: #141e3c;
     margin-left: 0px;
-    width: ${(props) => (!props.act ? "auto" : "93px")};
+    width: ${(props) => (!props.act ? "250px" : "80px")};
   }
 `;
 // @media only screen and (max-width: 375px) {

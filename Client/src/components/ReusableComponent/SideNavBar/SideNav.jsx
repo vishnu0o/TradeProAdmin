@@ -102,7 +102,7 @@ const Sidebar = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
         onMouseLeave={mouseOnLeave}
       >
         <SidebarComponent/>
-          {/* <LogoOut> */}
+           {/* <LogoOut> */}
             {/* <i className="bx bx-bookmark nav_icon" />
               <Avatar
                 alt="GSL"
