@@ -303,7 +303,7 @@ function Dialogue({ handleClose, open }) {
               <FormControl sx={{ display: "flex" }}>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="Basic"
+                  value="Basic"
                   name="radio-buttons-group"
                   sx={{
                     color: "white",

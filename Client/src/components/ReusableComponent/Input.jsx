@@ -10,27 +10,7 @@ import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAuto
 import { styled } from "@mui/system";
 
 export default function InputField({ label,handleChange,value,bgcolor,color }) {
-  const blue = {
-    100: "#DAECFF",
-    200: "#b6daff",
-    400: "#3399FF",
-    500: "#007FFF",
-    600: "#0072E5",
-    900: "#003A75"
-  };
-
-  const grey = {
-    50: "#F3F6F9",
-    100: "#E5EAF2",
-    200: "#DAE2ED",
-    300: "#C7D0DD",
-    400: "#B0B8C4",
-    500: "#9DA8B7",
-    600: "#6B7A90",
-    700: "#434D5B",
-    800: "#303740",
-    900: "#1C2025"
-  };
+  
   return (
     <>
       <TextField
@@ -43,6 +23,8 @@ export default function InputField({ label,handleChange,value,bgcolor,color }) {
           width: "100%",
           borderRadius: "4px",
           "& .MuiInputBase-input": {
+            bgcolor:bgcolor?bgcolor: "#3F3F46",
+            padding:"14px",
             color:color?color: "#E4E4E7"
           },
           "& .MuiInputLabel-root": {
@@ -131,45 +113,50 @@ export const DescriptionInputField = ({ placeholder,handleChange,value }) => {
   );
 };
 
-export const SelectInputField = ({handleChange,value}) => {
+export const SelectInputField = ({courseDetail,handleChange,value}) => {
   return (
     <>
       <FormControl
         variant="filled"
         sx={{
           // minWidth: 120,
-          backgroundColor: "#3F3F46",
+          backgroundColor:courseDetail? "#fff" : "#3F3F46",
           width: "100%",
           borderRadius: "4px",
-
+          color:"#000",
+          
           "& .MuiFilledInput-root": {
-            backgroundColor: "#3F3F46",
-            color: "#E4E4E7",
+            backgroundColor:courseDetail? "#fff" : "#3F3F46",
+            color: "#000",
             "&:before": {
+              color: "#000",
+              // backgroundColor:courseDetail? "#fff" : "#3F3F46",
               borderBottom: "none" // Remove underline before focus
             },
             "&:after": {
+              color: "#000",
               borderBottom: "none"
               // Remove underline after focus
             },
             "&:hover:not(.Mui-disabled):before": {
+              color: "#000",
               borderBottom: "none" // Remove underline on hover
             }
           }
         }}
       >
-        <InputLabel
+        {/* <InputLabel
           id="demo-simple-select-filled-label"
           sx={{ color: "#E4E4E7" }}
         >
           Select language
-        </InputLabel>
+        </InputLabel> */}
 
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
           multiple
-          //   placeholder="Select language"
+            placeholder="Select language"
             value={value}
             onChange={handleChange}
         >
@@ -183,7 +170,6 @@ export const SelectInputField = ({handleChange,value}) => {
 
         </Select>
       </FormControl>
-      ;
     </>
   );
 };
