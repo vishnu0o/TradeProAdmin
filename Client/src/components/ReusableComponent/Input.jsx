@@ -9,7 +9,28 @@ import * as React from "react";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/system";
 
-export default function InputField({ label,handleChange,value }) {
+export default function InputField({ label,handleChange,value,bgcolor,color }) {
+  const blue = {
+    100: "#DAECFF",
+    200: "#b6daff",
+    400: "#3399FF",
+    500: "#007FFF",
+    600: "#0072E5",
+    900: "#003A75"
+  };
+
+  const grey = {
+    50: "#F3F6F9",
+    100: "#E5EAF2",
+    200: "#DAE2ED",
+    300: "#C7D0DD",
+    400: "#B0B8C4",
+    500: "#9DA8B7",
+    600: "#6B7A90",
+    700: "#434D5B",
+    800: "#303740",
+    900: "#1C2025"
+  };
   return (
     <>
       <TextField
@@ -18,11 +39,11 @@ export default function InputField({ label,handleChange,value }) {
         variant="filled"
         placeholder={label}
         sx={{
-          bgcolor: "#3F3F46",
+          bgcolor:bgcolor?bgcolor: "#3F3F46",
           width: "100%",
           borderRadius: "4px",
           "& .MuiInputBase-input": {
-            color: "#E4E4E7"
+            color:color?color: "#E4E4E7"
           },
           "& .MuiInputLabel-root": {
             color: "#E4E4E7"
@@ -80,8 +101,8 @@ export const DescriptionInputField = ({ placeholder,handleChange,value }) => {
     line-height: 1.5;
     padding: 8px 12px;
     border-radius: 8px;
-    color: ${theme.palette.mode === "dark" ? grey[300] : "white"};
-    background: ${theme.palette.mode === "dark" ? grey[900] : "#3F3F46"};
+    color: ${theme.palette.mode === "dark" ? grey[300] : "#000"};
+    background: ${theme.palette.mode === "dark" ? grey[900] : grey[50]};
     // border: 1px solid ${
       theme.palette.mode === "dark" ? grey[700] : grey[200]
     };

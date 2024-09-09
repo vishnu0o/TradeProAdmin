@@ -113,7 +113,7 @@ const ManageCoursePage = () => {
                 {/* Main Content */}
                 <Grid item xs={12} sm={9} md={9} style={{ paddingLeft: 10 }}>
                     <div style={{ backgroundColor: "#fff", borderRadius: 10,padding:20 }}>
-                        <EditCourse selectedCourse/>
+                        <EditCourse selectedCourse={selectedCourse}/>
                     </div>
                 </Grid>
             </Grid>
