@@ -1,45 +1,95 @@
 import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import InputField, { DescriptionInputField, SelectInputField } from "../ReusableComponent/Input";
+import { courseCreateAction } from "../../Redux/Action/courseAction";
+import { useDispatch } from "react-redux";
+import { SubmitButton } from "../ReusableComponent/Button";
 
 const EditCourse = ({ selectedCourse }) => {
+    const dispatch = useDispatch()
     const videoRef = useRef(null);
 
-    const [formData, setFormData] = useState(null);
-    const [uploadPreview, setUploadPreview] = useState(null);
-    console.log({ formData });
+    const [title, setTitle] = useState("");
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [previewVideo, setUploadPreview] = useState();
+    const [courseAuthor, setCourseAuthor] = useState("");
+    const [courseDescription, setCourseDescription] = useState("");
+    const [typeOfCourse, setTypeOfCourse] = useState("");
+    const [error, setError] = useState({});
 
-    const handleVideoUpload = (e) => {
-        const file = e.target.files[0]; // Get the uploaded file
-        if (file) {
-            const formData = new FormData();
-            formData.append("previewVideo", file);
+    console.log({ previewVideo });
+    console.log({ selectedLanguages });
 
-            const videoURL = URL.createObjectURL(file);
-            setUploadPreview(videoURL);
+
+
+    const validate = () => {
+        let errors = {};
+    
+        if (previewVideo === "") {
+          errors.previewVideo = "Preview is required";
         }
-    };
+        if (title === "") {
+          errors.title = "Title is required";
+        }
+        if (courseAuthor === "") {
+          errors.courseAuthor = "CourseAuthor is required";
+        }
+        if (courseDescription === "") {
+          errors.courseDescription = "Course description is required";
+        }
+        if (typeOfCourse === "") {
+          errors.typeOfCourse = "Type of course is required";
+        }
+        if (selectedLanguages.length == 0) {
+          errors.selectedLanguages = "Language is required";
+        }
+    
+        console.log(errors, "errorserrorserrors");
+        setError(errors);
+        return Object.keys(errors).length === 0;
+      };
+    
+      const handleSubmit = () => {
+        if (validate()) {
+          const formData = new FormData()
+          formData.append("preview",previewVideo)
+          formData.append("title",title),
+          formData.append("author",courseAuthor),
+          formData.append("description",courseDescription),
+          formData.append("courseType",typeOfCourse),
+          formData.append("language",selectedLanguages)
+        //   dispatch(courseCreateAction(formData))
+          // handleClose()
+        }
+      };
+
+
 
     useEffect(() => {
-        setFormData(selectedCourse);
+        setTitle(selectedCourse.title);
+        setSelectedLanguages(selectedCourse.language);
+        setUploadPreview(selectedCourse.previewVideo);
+        setCourseAuthor(selectedCourse.author);
+        setCourseDescription(selectedCourse.description);
+        setTypeOfCourse(selectedCourse.courseType);
     }, [selectedCourse]);
 
     useEffect(() => {
         // Ensure the video starts playing when the video URL is available
-        if (videoRef.current && formData?.previewVideo) {
+        if (videoRef.current && previewVideo) {
             videoRef.current.load(); // Load the video
             videoRef.current.play().catch((error) => {
                 console.error("Autoplay failed:", error);
             });
         }
-    }, [formData?.previewVideo, uploadPreview]);
+    }, [previewVideo]);
 
 
 
     return (
         <div style={{ display: "flex", flexDirection: "column", transition: "all .3s ease" }}>
-            <p style={{ fontSize: "14px", color: "#556987", fontWeight: "bold" }}>{formData?.courseType}</p>
-            <h1 style={{ fontSize: 30, fontWeight: "900" }}>{formData?.title}</h1>
+            <p style={{ fontSize: "14px", color: "#556987", fontWeight: "bold" }}>{typeOfCourse}</p>
+            <h1 style={{ fontSize: 30, fontWeight: "900" }}>{title}</h1>
 
             <Typography sx={{ color: "black", mt: 2, mb: 1, fontWeight: "bold" }}>Upload Preview Video</Typography>
             <FormLabel
@@ -64,7 +114,7 @@ const EditCourse = ({ selectedCourse }) => {
                         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
                     }}
                 >
-                    <source src={uploadPreview || formData?.previewVideo} type="video/mp4" />
+                    <source src={typeof previewVideo === "string" ? previewVideo : previewVideo && URL.createObjectURL(previewVideo)} type="video/mp4" />
                 </video>
                 <Typography
                     sx={{
@@ -84,7 +134,7 @@ const EditCourse = ({ selectedCourse }) => {
                     hidden
                     name="previewVideo"
                     // multiple
-                    onChange={(e) => handleVideoUpload(e)}
+                    onChange={(e) => setUploadPreview(e.target.files[0])}
                     accept=".mp4, .mov, .avi, .mkv, video/*"
                 />
             </FormLabel>
@@ -100,9 +150,9 @@ const EditCourse = ({ selectedCourse }) => {
                 >
                     Title
                 </Typography>
-                <InputField label="Course title" handleChange={(e) => setTitle(e.target.value)} value={formData?.title} bgcolor="#F3F6F9" color="#000" />
+                <InputField label="Course title" handleChange={(e) => setTitle(e.target.value)} value={title} bgcolor="#F3F6F9" color="#000" />
             </Box>
-            {/* <Typography sx={{color:"red"}}>{error?.title}</Typography> */}
+            <Typography sx={{color:"red"}}>{error?.title}</Typography>
 
             <Box sx={{ mt: 2 }}>
                 <Typography
@@ -115,9 +165,9 @@ const EditCourse = ({ selectedCourse }) => {
                 >
                     Course Author
                 </Typography>
-                <InputField label="Course title" handleChange={(e) => setTitle(e.target.value)} value={formData?.author} bgcolor="#F3F6F9" color="#000" />
+                <InputField label="Course title" handleChange={(e) => setCourseAuthor(e.target.value)} value={courseAuthor} bgcolor="#F3F6F9" color="#000" />
             </Box>
-            {/* <Typography sx={{color:"red"}}>{error?.title}</Typography> */}
+            <Typography sx={{color:"red"}}>{error?.title}</Typography>
             <Box sx={{ mt: 2 }}>
                 <Typography
                     sx={{
@@ -129,9 +179,9 @@ const EditCourse = ({ selectedCourse }) => {
                 >
                     Description
                 </Typography>
-                <DescriptionInputField placeholder="Enter course description" handleChange={(e) => setCourseDescription(e.target.value)} value={formData?.description} />
+                <DescriptionInputField placeholder="Enter course description" handleChange={(e) => setCourseDescription(e.target.value)} value={courseDescription} />
             </Box>
-            {/* <Typography sx={{color:"red"}}>{error?.courseDescription}</Typography> */}
+            <Typography sx={{color:"red"}}>{error?.courseDescription}</Typography>
 
             <Box sx={{ mt: 2 }}>
                 <Typography
@@ -147,7 +197,7 @@ const EditCourse = ({ selectedCourse }) => {
                 <FormControl sx={{ display: "flex" }}>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
-                        value={formData && formData.courseType}
+                        value={typeOfCourse}
                         name="radio-buttons-group"
                         sx={{
                             color: "#000",
@@ -210,7 +260,7 @@ const EditCourse = ({ selectedCourse }) => {
                                     sx={{
                                         color: "#D5DAE1",
                                         "&.Mui-checked": {
-                                            color: "white",
+                                            color: "#000",
                                         },
                                     }}
                                 />
@@ -220,7 +270,7 @@ const EditCourse = ({ selectedCourse }) => {
                         />
                     </RadioGroup>
                 </FormControl>
-                {/* <Typography sx={{color:"red"}}>{error?.typeOfCourse}</Typography> */}
+                <Typography sx={{color:"red"}}>{error?.typeOfCourse}</Typography>
             </Box>
             <Box sx={{ mt: 1 }}>
                 <Typography
@@ -233,10 +283,21 @@ const EditCourse = ({ selectedCourse }) => {
                 >
                     Select Language
                 </Typography>
-                {/* <SelectInputField courseDetail={true} handleChange={(e) => setSelectedLanguages(e.target.value)} value={formData && formData?.language} /> */}
+                <SelectInputField  handleChange={(e) => setSelectedLanguages(e.target.value)} value={selectedLanguages || selectedCourse.language} />
             </Box>
-            {/* <Typography sx={{ color: "red" }}>{error?.selectedLanguages}</Typography> */}
-            <button style={{ background: "#6255FA", color: "#fff", padding: 10, borderRadius: 5, marginTop: 20 }}>Edit Course</button>
+            <Typography sx={{ color: "red" }}>{error?.selectedLanguages}</Typography>
+            <Box sx={{ mt: 1 }}>
+                <SubmitButton
+                  title={"Add Course"}
+                  component="addCourse"
+                  widthSize="100%"
+                  bgColor="#6255FA"
+                  borderRadius="2px"
+                  heightSize="52px"
+                  type="click"
+                  handleSubmit={handleSubmit}
+                />
+              </Box>
         </div>
     );
 };
