@@ -21,7 +21,7 @@ export default function InputField({ label,handleChange,value,bgcolor,color }) {
         sx={{
           bgcolor:bgcolor?bgcolor: "#3F3F46",
           width: "100%",
-          borderRadius: "4px",
+          borderRadius: "5px",
           "& .MuiInputBase-input": {
             bgcolor:bgcolor?bgcolor: "#3F3F46",
             padding:"14px",
@@ -113,44 +113,43 @@ export const DescriptionInputField = ({ placeholder,handleChange,value }) => {
   );
 };
 
-export const SelectInputField = ({courseDetail,handleChange,value}) => {
+export const SelectInputField = ({handleChange,value}) => {
   return (
     <>
       <FormControl
         variant="filled"
         sx={{
           // minWidth: 120,
-          backgroundColor:courseDetail? "#fff" : "#3F3F46",
+          backgroundColor:"#3F3F46",
           width: "100%",
           borderRadius: "4px",
-          color:"#000",
+          color:"#fff",
           
           "& .MuiFilledInput-root": {
-            backgroundColor:courseDetail? "#fff" : "#3F3F46",
-            color: "#000",
+            backgroundColor: "#3F3F46",
+            color: "#fff",
             "&:before": {
-              color: "#000",
-              // backgroundColor:courseDetail? "#fff" : "#3F3F46",
+              color: "#fff",
               borderBottom: "none" // Remove underline before focus
             },
             "&:after": {
-              color: "#000",
+              color: "#fff",
               borderBottom: "none"
               // Remove underline after focus
             },
             "&:hover:not(.Mui-disabled):before": {
-              color: "#000",
+              color: "#fff",
               borderBottom: "none" // Remove underline on hover
             }
           }
         }}
       >
-        {/* <InputLabel
+        <InputLabel
           id="demo-simple-select-filled-label"
           sx={{ color: "#E4E4E7" }}
         >
-          Select language
-        </InputLabel> */}
+           Select language
+         </InputLabel>
 
         <Select
           labelId="demo-simple-select-filled-label"

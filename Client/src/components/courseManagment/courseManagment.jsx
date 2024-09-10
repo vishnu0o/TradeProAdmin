@@ -13,13 +13,8 @@ import Certificates from "./Certificates.jsx";
 const ManageCoursePage = () => {
     const dispatch = useDispatch();
 
-    const [title, setTitle] = useState("");
-    const [selectedLanguages, setSelectedLanguages] = useState([]);
-    const [previewVideo, setUploadPreview] = useState();
-    const [courseAuthor, setCourseAuthor] = useState("");
-    const [courseDescription, setCourseDescription] = useState("");
-    const [typeOfCourse, setTypeOfCourse] = useState("Basic");
-    const [error, setError] = useState({});
+    const [openAddLesson, setOpenAddLesson] = useState(false);
+
 
     const [selectedCourse, setSelectedCourse] = useState({});
     const [selectedCourseItem, setSelectedCourseItem] = useState(null);
@@ -55,6 +50,25 @@ const ManageCoursePage = () => {
                 <img src="./home.svg" alt="img" />
                 <p style={{ color: "#7D8995" }}>{location.pathname}</p>
             </div>
+            {selectedCourseItem?.name === "Lessons" && (
+                <Button onClick={()=>setOpenAddLesson(true)}
+                    sx={{
+                        display: "inline-flex",
+                        background: "#231F20",
+                        textTransform: "capitalize",
+                        ml: "auto",
+                        mb: 1,
+                        "&:hover": {
+                            backgroundColor: "#231F20", // Maintain the same background color on hover
+                        },
+                    }}
+                    variant="contained"
+                >
+                    <ClearAllIcon sx={{ mr: 1 }} />
+                    Add Lesson
+                </Button>
+            )}
+
             <Grid container gap={0} width={"100%"}>
                 {/* Sidebar */}
                 <Grid item xs={12} sm={3} md={3} style={{ paddingRight: 10 }}>
@@ -122,7 +136,7 @@ const ManageCoursePage = () => {
 
                 {/* Main Content */}
                 <Grid item xs={12} sm={9} md={9} style={{ paddingLeft: 10 }}>
-                    <div style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>{selectedCourseItem?.name === manageCourseItems[0].name ? <EditCourse selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[1].name ? <Lessons selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[2].name ? <Certificates selectedCourse={selectedCourse} /> : null}</div>
+                    <div style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>{selectedCourseItem?.name === manageCourseItems[0].name ? <EditCourse selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[1].name ? <Lessons openAddLesson={openAddLesson} setOpenAddLesson={()=>setOpenAddLesson()} selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[2].name ? <Certificates selectedCourse={selectedCourse} /> : null}</div>
                 </Grid>
             </Grid>
         </div>

@@ -26,7 +26,7 @@ export const SubmitButton = ({
         fontWeight: 600,
         fontSize: "12px",
         "&:hover": {
-          backgroundColor: "black",
+          backgroundColor:bgColor?bgColor: "black",
         }
       }}
     >
