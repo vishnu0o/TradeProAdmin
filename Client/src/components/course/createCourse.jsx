@@ -84,7 +84,7 @@ export default function Dialogue({ open, handleClose }) {
       formData.append("courseType",typeOfCourse),
       formData.append("language",selectedLanguages)
       dispatch(courseCreateAction(formData))
-      // handleClose()
+      handleClose()
     }
   };
   return (

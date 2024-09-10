@@ -34,6 +34,8 @@ const EditCourse = ({ selectedCourse }) => {
         }
     }, [formData?.previewVideo, uploadPreview]);
 
+
+
     return (
         <div style={{ display: "flex", flexDirection: "column", transition: "all .3s ease" }}>
             <p style={{ fontSize: "14px", color: "#556987", fontWeight: "bold" }}>{formData?.courseType}</p>
