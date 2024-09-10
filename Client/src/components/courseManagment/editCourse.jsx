@@ -35,7 +35,7 @@ const EditCourse = ({ selectedCourse }) => {
     }, [formData?.previewVideo, uploadPreview]);
 
     return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column", transition: "all .3s ease" }}>
             <p style={{ fontSize: "14px", color: "#556987", fontWeight: "bold" }}>{formData?.courseType}</p>
             <h1 style={{ fontSize: 30, fontWeight: "900" }}>{formData?.title}</h1>
 
@@ -231,10 +231,10 @@ const EditCourse = ({ selectedCourse }) => {
                 >
                     Select Language
                 </Typography>
-                <SelectInputField courseDetail={true} handleChange={(e) => setSelectedLanguages(e.target.value)} value={formData && formData?.language} />
+                {/* <SelectInputField courseDetail={true} handleChange={(e) => setSelectedLanguages(e.target.value)} value={formData && formData?.language} /> */}
             </Box>
             {/* <Typography sx={{ color: "red" }}>{error?.selectedLanguages}</Typography> */}
-            <button style={{ background: "#6255FA", color: "#fff", padding: 10, borderRadius: 5 ,marginTop:20 }}>Edit Course</button>
+            <button style={{ background: "#6255FA", color: "#fff", padding: 10, borderRadius: 5, marginTop: 20 }}>Edit Course</button>
         </div>
     );
 };

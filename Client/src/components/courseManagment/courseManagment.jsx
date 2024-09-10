@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 import { courseFindAction } from "../../Redux/Action/courseAction";
 import { useDispatch, useSelector } from "react-redux";
 import EditCourse from "./editCourse.jsx";
+import Lessons from "./Lessons.jsx";
+import Certificates from "./Certificates.jsx";
 
 const ManageCoursePage = () => {
     const dispatch = useDispatch();
@@ -19,16 +21,17 @@ const ManageCoursePage = () => {
     const [typeOfCourse, setTypeOfCourse] = useState("Basic");
     const [error, setError] = useState({});
 
-
-    const [selectedCourse,setSelectedCourse]= useState({});
+    const [selectedCourse, setSelectedCourse] = useState({});
+    const [selectedCourseItem, setSelectedCourseItem] = useState(null);
 
     const location = useLocation();
     const query = new URLSearchParams(location.search);
 
     // Destructure query parameters
     const id = query.get("id");
-    console.log({id});
-    console.log({selectedCourse});
+    console.log({ id });
+    console.log({ selectedCourse });
+    console.log({ selectedCourseItem });
 
     const manageCourseItems = [{ name: "Course Details" }, { name: "Lessons" }, { name: "Certificates" }];
 
@@ -38,11 +41,12 @@ const ManageCoursePage = () => {
 
     useEffect(() => {
         dispatch(courseFindAction());
+        setSelectedCourseItem(manageCourseItems[0]);
     }, []);
 
     useEffect(() => {
         if (courseFindSuccess) {
-            setSelectedCourse(courseFindSuccess?.data.find((item)=> item._id === id))
+            setSelectedCourse(courseFindSuccess?.data.find((item) => item._id === id));
         }
     }, [courseFindSuccess]);
     return (
@@ -57,12 +61,12 @@ const ManageCoursePage = () => {
                     <div style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
                         <h1 style={{ fontSize: 20, fontWeight: "bold" }}>Manage Course</h1>
                         <List>
-                            {manageCourseItems.map((item) => (
+                            {manageCourseItems.map((item, index) => (
                                 <ListItem
                                     key={item.name}
+                                    onClick={() => setSelectedCourseItem(manageCourseItems[index])}
                                     sx={{
-                                        color: "#000",
-                                        border: "2px solid #000",
+                                        border: selectedCourseItem?.name === item.name ? "2px solid #6255FA" : "2px solid #000", // Purple border when selected
                                         borderRadius: "6px",
                                         display: "flex",
                                         alignItems: "center",
@@ -73,11 +77,17 @@ const ManageCoursePage = () => {
                                         cursor: "pointer",
                                         marginTop: 2,
                                         transition: "all 0.3s ease",
+                                        backgroundColor: selectedCourseItem?.name === item.name ? "#6255FA" : "transparent", // Purple background if selected
+                                        "& .MuiListItemIcon-root": {
+                                            color: selectedCourseItem?.name === item.name ? "#fff" : "#000", // Icon color: white if selected, black otherwise
+                                        },
+                                        "& .MuiListItemText-root": {
+                                            color: selectedCourseItem?.name === item.name ? "#fff" : "#000", // Text color: white if selected, black otherwise
+                                        },
                                         "&:hover": {
                                             backgroundColor: "#6255FA",
                                             color: "#fff",
                                             border: "2px solid #6255FA",
-
                                             "& .MuiListItemIcon-root": {
                                                 color: "#fff",
                                             },
@@ -112,9 +122,7 @@ const ManageCoursePage = () => {
 
                 {/* Main Content */}
                 <Grid item xs={12} sm={9} md={9} style={{ paddingLeft: 10 }}>
-                    <div style={{ backgroundColor: "#fff", borderRadius: 10,padding:20 }}>
-                        <EditCourse selectedCourse={selectedCourse}/>
-                    </div>
+                    <div style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>{selectedCourseItem?.name === manageCourseItems[0].name ? <EditCourse selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[1].name ? <Lessons selectedCourse={selectedCourse} /> : selectedCourseItem?.name === manageCourseItems[2].name ? <Certificates selectedCourse={selectedCourse} /> : null}</div>
                 </Grid>
             </Grid>
         </div>
