@@ -11,6 +11,9 @@ import { Fragment, useEffect, useState } from "react";
 import { Box, Divider } from "@mui/material";
 import InputField from "../ReusableComponent/Input";
 import { SubmitButton } from "../ReusableComponent/Button";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { courseLessonCreateAction } from "../../Redux/Action/courseAction";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -22,6 +25,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function AddLessonPopup({ openAddLesson, setOpenAddLesson }) {
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+  
+    // Destructure query parameters
+    const id = query.get("id");
+    const dispatch = useDispatch()
     const [lessonTitle, setLessonTitle] = useState("");
     const [error, setError] = useState({});
 
@@ -42,7 +51,8 @@ export default function AddLessonPopup({ openAddLesson, setOpenAddLesson }) {
     };
     const handleSubmit = () => {
         if (validate()) {
-            // actions
+            dispatch(courseLessonCreateAction(lessonTitle,id))
+            handleClose()
         }
     };
 

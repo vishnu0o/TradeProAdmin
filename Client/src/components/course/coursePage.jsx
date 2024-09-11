@@ -42,7 +42,7 @@ function CoursePage() {
             Swal.fire("Created!", "Course is created.", "success");
             dispatch({ type: COURSE_CREATE_SUCCESS, payload: false });
         }
-    }, [dispatch]);
+    }, [dispatch,courseCreateSuccess]);
 
     console.log(courseFindSuccess, "courseFindSuccess");
     console.log(course);
