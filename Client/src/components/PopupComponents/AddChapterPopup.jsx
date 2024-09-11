@@ -74,7 +74,6 @@ export default function AddChapterPopup({
     }
   };
 
-  useEffect(() => {});
   useEffect(() => {
     // Ensure the video starts playing when the video URL is available
     if (videoRef.current && chapterVideo) {

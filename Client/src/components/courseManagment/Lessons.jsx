@@ -14,11 +14,11 @@ import AddChapterPopup from "../PopupComponents/AddChapterPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { courseFindOneAction } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
+import EditChapterPopup from "../PopupComponents/EditChapterPopup";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import EditLessonPopup from "../PopupComponents/EditLessonPopup";
 
-export default function ControlledAccordions({
-  openAddLesson,
-  setOpenAddLesson
-}) {
+export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
@@ -27,12 +27,29 @@ export default function ControlledAccordions({
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
   const [openAddChapter, setOpenAddChapter] = React.useState(false);
-  const [lessonId, setLessonId] = React.useState("");
+  const [openEditChapter, setOpenEditChapter] = React.useState(false);
+  const [openEditLesson, setOpenEditLesson] = React.useState(false);
   const [lesson, setLesson] = React.useState([]);
+  const [lessonId, setLessonId] = React.useState("");
+  const [chapter, setChapter] = React.useState({});
+  const [selectedLesson, setSelectedLesson] = React.useState({});
 
+  console.log({ lessonId });
+  console.log({ chapter });
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const handleLessonDelete = (id) => {
+    console.log("leeeeeeeeeeeeeeeeeeeeee", { id });
+
+    // lesson delete action
+  };
+  const handleChapterDelete = (chapterId) => {
+    console.log({ chapterId });
+
+    // chapter delete action
   };
 
   // Reducer ::::::::::::::::::
@@ -47,36 +64,13 @@ export default function ControlledAccordions({
 
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
-  }, [dispatch,courseLessonCreateSuccess]);
+  }, [dispatch, courseLessonCreateSuccess]);
 
-  React.useEffect(()=>{
-    if(courseFindOneSuccess){
-        setLesson(courseFindOneSuccess?.data?.lessons)
+  React.useEffect(() => {
+    if (courseFindOneSuccess) {
+      setLesson(courseFindOneSuccess?.data?.lessons);
     }
-  },[courseFindOneSuccess])
-
-  const lessons = [
-    {
-      id: 1,
-      title: "Introduction",
-      chapters: [
-        { id: 1, title: "chapter name sample 1", video: "" },
-        { id: 2, title: "chapter name sample 2", video: "" },
-        { id: 3, title: "chapter name sample 2", video: "" }
-      ],
-      quiz: {}
-    },
-    {
-      id: 2,
-      title: "Nulla facilisi.",
-      chapters: [
-        { id: 1, title: "chapter name sample 1", video: "" },
-        { id: 2, title: "chapter name sample 2", video: "" },
-        { id: 3, title: "chapter name sample 2", video: "" }
-      ],
-      quiz: {}
-    }
-  ];
+  }, [courseFindOneSuccess]);
 
   console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
 
@@ -88,23 +82,67 @@ export default function ControlledAccordions({
             background: "#000",
             mb: 1,
             borderRadius: 1,
-            boxShadow: "0 0 10px #ddd"
+            boxShadow: "0 0 10px #ddd",
           }}
           key={index}
           expanded={expanded === `panel${index + 1}`}
           onChange={handleChange(`panel${index + 1}`)}
         >
-          <AccordionSummary
-            sx={{ color: "#fff" }}
-            expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-            aria-controls={`panel${index + 1}bh-content`}
-            id={`panel${index + 1}bh-header`}
-          >
-            {/* <Typography sx={{ width: "33%", flexShrink: 0 }}><MenuIcon/></Typography> */}
-            <Typography sx={{ width: "100%", flexShrink: 0 }}>
+          <AccordionSummary sx={{ color: "#fff" }} expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />} aria-controls={`panel${index + 1}bh-content`} id={`panel${index + 1}bh-header`}>
+            <Typography sx={{ width: "90%", flexShrink: 0 }}>
               <MenuIcon sx={{ mr: 1 }} /> Lesson {index + 1} - {item.lessonName}
             </Typography>
-            {/* <Typography sx={{ color: "text.secondary" }}>I am an accordion</Typography> */}
+            <Button
+              onClick={() => {
+                setSelectedLesson(item);
+                setOpenEditLesson(true);
+              }}
+              sx={{
+                minWidth: "0",
+                width: "50px",
+                height: "30px",
+                color: "#fff",
+                fontSize: "12px",
+                fontWeight: "bold",
+                background: "transparent",
+                boxShadow: "none ",
+                textTransform: "capitalize",
+                borderRadius: "50%",
+                padding: "0",
+
+                "&:hover": {
+                  boxShadow: "none ",
+                  backgroundColor: "rgba(225, 225, 225, .2)",
+                },
+              }}
+              variant="contained"
+            >
+              <EditOutlinedIcon />
+            </Button>
+            <Button
+              onClick={() => handleLessonDelete(item._id)}
+              sx={{
+                minWidth: "0",
+                width: "50px",
+                height: "30px",
+                color: "#FC0005",
+                fontSize: "12px",
+                fontWeight: "bold",
+                background: "transparent",
+                boxShadow: "none ",
+                textTransform: "capitalize",
+                borderRadius: "50%",
+                padding: "0",
+
+                "&:hover": {
+                  boxShadow: "none ",
+                  backgroundColor: "rgba(252, 0, 5, .2)",
+                },
+              }}
+              variant="contained"
+            >
+              <DeleteIcon />
+            </Button>
           </AccordionSummary>
           <AccordionDetails sx={{ background: "#fff" }}>
             <div
@@ -112,7 +150,7 @@ export default function ControlledAccordions({
                 width: "100%",
                 display: "flex",
                 justifyContent: "end",
-                padding: "10px"
+                padding: "10px",
               }}
             >
               <Button
@@ -125,8 +163,8 @@ export default function ControlledAccordions({
                   textTransform: "capitalize",
                   mr: 1,
                   "&:hover": {
-                    backgroundColor: "#231F20" // Maintain the same background color on hover
-                  }
+                    backgroundColor: "#231F20",
+                  },
                 }}
                 variant="contained"
               >
@@ -139,8 +177,8 @@ export default function ControlledAccordions({
                   textTransform: "capitalize",
                   mr: 1,
                   "&:hover": {
-                    backgroundColor: "#231F20" // Maintain the same background color on hover
-                  }
+                    backgroundColor: "#231F20",
+                  },
                 }}
                 variant="contained"
               >
@@ -153,14 +191,12 @@ export default function ControlledAccordions({
                 <Typography
                   sx={{
                     fontWeight: "bold",
-                    fontSize: "14px"
+                    fontSize: "14px",
                   }}
                 >
                   Chapter {index + 1}
                 </Typography>
-                <Box
-                  sx={{ mt: 1, display: "flex", alignItems: "center", gap: 1 }}
-                >
+                <Box sx={{ mt: 1, display: "flex", alignItems: "center", gap: 1 }}>
                   <Typography
                     sx={{
                       color: "#1C232D",
@@ -169,15 +205,16 @@ export default function ControlledAccordions({
                       width: "100%",
                       p: 1,
                       borderRadius: "5px",
-                      textTransform: "capitalize"
+                      textTransform: "capitalize",
                     }}
                   >
                     {chapter.title}
                   </Typography>
                   <Button
                     onClick={() => {
-                      setOpenAddChapter(true);
-                      setLessonId(false);
+                      setOpenEditChapter(true);
+                      setLessonId(item._id);
+                      setChapter(chapter);
                     }}
                     sx={{
                       color: "#000",
@@ -186,14 +223,15 @@ export default function ControlledAccordions({
                       background: "#6255FA30",
                       textTransform: "capitalize",
                       "&:hover": {
-                        backgroundColor: "rgba(98, 85, 250, 0.5)" // Maintain the same background color on hover
-                      }
+                        backgroundColor: "rgba(98, 85, 250, 0.5)",
+                      },
                     }}
                     variant="contained"
                   >
                     Edit
                   </Button>
                   <Button
+                    onClick={() => handleChapterDelete(chapter._id)}
                     sx={{
                       minWidth: "0",
                       width: "43px",
@@ -209,8 +247,8 @@ export default function ControlledAccordions({
 
                       "&:hover": {
                         boxShadow: "none ",
-                        backgroundColor: "transparent" // Maintain the same background color on hover
-                      }
+                        backgroundColor: "transparent",
+                      },
                     }}
                     variant="contained"
                   >
@@ -222,15 +260,10 @@ export default function ControlledAccordions({
           </AccordionDetails>
         </Accordion>
       ))}
-      <AddLessonPopup
-        openAddLesson={openAddLesson}
-        setOpenAddLesson={setOpenAddLesson}
-      />
-      <AddChapterPopup
-        lessonId={lessonId}
-        openAddChapter={openAddChapter}
-        setOpenAddChapter={setOpenAddChapter}
-      />
+      <AddLessonPopup openAddLesson={openAddLesson} setOpenAddLesson={setOpenAddLesson} />
+      <EditLessonPopup lesson={selectedLesson} openEditLesson={openEditLesson} setOpenEditLesson={setOpenEditLesson} />
+      <AddChapterPopup lessonId={lessonId} openAddChapter={openAddChapter} setOpenAddChapter={setOpenAddChapter} />
+      <EditChapterPopup lessonId={lessonId} chapter={chapter} openEditChapter={openEditChapter} setOpenEditChapter={setOpenEditChapter} />
     </div>
   );
 }
