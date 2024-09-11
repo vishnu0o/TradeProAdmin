@@ -49,11 +49,9 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
             {lessons.map((item, index) => (
                 <Accordion sx={{ background: "#000", mb: 1, borderRadius: 1, boxShadow: "0 0 10px #ddd" }} key={index} expanded={expanded === `panel${index + 1}`} onChange={handleChange(`panel${index + 1}`)}>
                     <AccordionSummary sx={{ color: "#fff" }} expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />} aria-controls={`panel${index + 1}bh-content`} id={`panel${index + 1}bh-header`}>
-                        {/* <Typography sx={{ width: "33%", flexShrink: 0 }}><MenuIcon/></Typography> */}
                         <Typography sx={{ width: "100%", flexShrink: 0 }}>
                             <MenuIcon sx={{ mr: 1 }} /> Lesson {index + 1} - {item.title}
                         </Typography>
-                        {/* <Typography sx={{ color: "text.secondary" }}>I am an accordion</Typography> */}
                     </AccordionSummary>
                     <AccordionDetails sx={{ background: "#fff" }}>
                         <div style={{ width: "100%", display: "flex", justifyContent: "end", padding: "10px" }}>
@@ -67,7 +65,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                                     textTransform: "capitalize",
                                     mr: 1,
                                     "&:hover": {
-                                        backgroundColor: "#231F20", // Maintain the same background color on hover
+                                        backgroundColor: "#231F20", 
                                     },
                                 }}
                                 variant="contained"
@@ -81,7 +79,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                                     textTransform: "capitalize",
                                     mr: 1,
                                     "&:hover": {
-                                        backgroundColor: "#231F20", // Maintain the same background color on hover
+                                        backgroundColor: "#231F20", 
                                     },
                                 }}
                                 variant="contained"
@@ -126,7 +124,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                                             background: "#6255FA30",
                                             textTransform: "capitalize",
                                             "&:hover": {
-                                                backgroundColor: "rgba(98, 85, 250, 0.5)", // Maintain the same background color on hover
+                                                backgroundColor: "rgba(98, 85, 250, 0.5)", 
                                             },
                                         }}
                                         variant="contained"
@@ -149,7 +147,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
                                             "&:hover": {
                                                 boxShadow: "none ",
-                                                backgroundColor: "transparent", // Maintain the same background color on hover
+                                                backgroundColor: "transparent", 
                                             },
                                         }}
                                         variant="contained"
@@ -163,7 +161,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                 </Accordion>
             ))}
             <AddLessonPopup openAddLesson={openAddLesson} setOpenAddLesson={setOpenAddLesson} />
-            <AddChapterPopup chapterId={chapterId} openAddChapter={openAddChapter} setOpenAddChapter={setOpenAddChapter} />
+            <AddChapterPopup openAddChapter={openAddChapter} setOpenAddChapter={setOpenAddChapter} />
         </div>
     );
 }

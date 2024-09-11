@@ -22,7 +22,7 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
     const menuItems = [
         { id: 1, text: "Dashboard", icon: <DashboardIcon />, url: "/" },
         { id: 2, text: "Course", icon: <SchoolIcon />, url: "/course" },
-        { id: 3, text: "Referral Management", icon: <PeopleIcon />, url: "/course" },
+        { id: 3, text: "Referral Management", icon: <PeopleIcon />, url: "/refferals" },
     ];
     const auto = "267px";
     const logoutItem = { id: 4, text: "Log Out", icon: <LogoutIcon /> };

@@ -21,17 +21,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-
-
-export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddChapter }) {
-
+export default function AddChapterPopup({ openAddChapter, setOpenAddChapter }) {
     const videoRef = useRef(null);
 
     const [chapterTitle, setChapterTitle] = useState("");
     const [chapterVideo, setChapterVideo] = useState();
     const [error, setError] = useState({});
 
-    console.log({chapterVideo});
+    console.log({ chapterVideo });
 
     const handleClose = () => {
         setOpenAddChapter(false);
@@ -45,7 +42,7 @@ export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddCh
         }
         if (chapterVideo === undefined) {
             errors.chapterVideo = "video is required";
-          }
+        }
 
         console.log(errors, "errorserrorserrors");
         setError(errors);
@@ -57,9 +54,6 @@ export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddCh
         }
     };
 
-    useEffect(()=>{
-        
-    })
     useEffect(() => {
         // Ensure the video starts playing when the video URL is available
         if (videoRef.current && chapterVideo) {
@@ -131,7 +125,7 @@ export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddCh
                     </Box>
                     <Typography sx={{ color: "red" }}>{error?.chapterTitle}</Typography>
 
-                    <Typography sx={{ color: "#fff", mt: 2, mb: 1,fontSize:"14px" }}>Upload Video</Typography>
+                    <Typography sx={{ color: "#fff", mt: 2, mb: 1, fontSize: "14px" }}>Upload Video</Typography>
                     <FormLabel
                         sx={{
                             boxSizing: "border-box",
@@ -142,7 +136,7 @@ export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddCh
                             width: "100%",
                             cursor: "pointer",
                             borderRadius: "4px",
-                            background:"#3F3F46"
+                            background: "#3F3F46",
                         }}
                     >
                         <video
@@ -180,7 +174,7 @@ export default function AddChapterPopup({ chapterId,openAddChapter, setOpenAddCh
                             accept=".mp4, .mov, .avi, .mkv, video/*"
                         />
                     </FormLabel>
-                                <Typography sx={{ color: "red" }}>{error?.chapterVideo}</Typography>
+                    <Typography sx={{ color: "red" }}>{error?.chapterVideo}</Typography>
                 </DialogContent>
                 <DialogActions
                     style={{

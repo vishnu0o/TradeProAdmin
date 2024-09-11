@@ -10,6 +10,7 @@ import SidebarComponent from "./components/ReusableComponent/Sidebar";
 import Header from "./components/ReusableComponent/Header";
 import { Box } from "@mui/material";
 import ManageCoursePage from "./components/courseManagment/courseManagment";
+import RefferalsPage from "./components/RefferalManagement/RefferalsPage";
 
 function App() {
     const [isHover, setIsHover] = useState(true);
@@ -30,9 +31,8 @@ function App() {
                         gridTemplateColumns: isHover ? "80px 1fr" : "250px 1fr",
                         width: "100vw",
                         overflowX: "hidden",
-                        transition:".3s ease"
+                        transition: ".3s ease",
                     }}
-                    
                 >
                     <Box
                         className="sideBar_box"
@@ -45,8 +45,8 @@ function App() {
                     <Box
                         sx={{
                             width: "100%",
-                            minHeight:"100vh",
-                            backgroundColor:"#f4f4f4"
+                            minHeight: "100vh",
+                            backgroundColor: "#f4f4f4",
                         }}
                     >
                         <Header />
@@ -57,6 +57,7 @@ function App() {
                             <Route path="/" element={<CourseTabs />} />
                             <Route path="/course" element={<CoursePage />} />
                             <Route path="/courseManagment" element={<ManageCoursePage />} />
+                            <Route path="/refferals" element={<RefferalsPage />} />
                         </Routes>
                     </Box>
                 </Box>
