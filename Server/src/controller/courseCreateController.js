@@ -147,6 +147,34 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
 });
 
 
+// // @desc    Course Lesson update
+// // @route   post /api/course/updateLesson
+// // @access  user
+
+// export const createCourseLessonController = asyncHandler(async (req, res) => {
+//   try {
+//     const { lesson, id } = req.body;
+
+//     const findCourse = await Courses.findOne({ _id: id });
+
+//     const createLesson = await Courses.updateOne(
+//       { _id: id },
+//       {
+//         $push: {
+//           lessons: { lessonName: lesson }
+//         }
+//       }
+//     );
+//     res
+//       .status(200)
+//       .json({ message: "Lesson created successfully", status: findCourse });
+//   } catch (error) {
+//     console.log(error, "error");
+//     res.status(500).json({ message: "Something went wrong", data: error });
+//   }
+// });
+
+
 
 // @desc    Course Chapter create
 // @route   post /api/course/createChapter

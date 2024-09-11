@@ -44,7 +44,6 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
     if (lessonTitle === "") {
       errors.lessonTitle = "Title is required";
     }
-
     console.log(errors, "errorserrorserrors");
     setError(errors);
     return Object.keys(errors).length === 0;
