@@ -62,9 +62,13 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
     return state.courseLessonCreate;
   });
 
+  let { courseChapterCreateSuccess } = useSelector((state) => {
+    return state.courseChapterCreate;
+  });
+
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
-  }, [dispatch, courseLessonCreateSuccess]);
+  }, [dispatch, courseLessonCreateSuccess,courseChapterCreateSuccess]);
 
   React.useEffect(() => {
     if (courseFindOneSuccess) {

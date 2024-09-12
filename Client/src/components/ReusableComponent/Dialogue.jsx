@@ -31,6 +31,8 @@ function Dialogue({ handleClose, open }) {
   const [courseAuthor, setCourseAuthor] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [typeOfCourse, setTypeOfCourse] = useState("Basic");
+  const [coursePrice, setCoursePrice] = useState("");
+
   const [error, setError] = useState({});
 
   function PaperComponent(props) {
@@ -56,6 +58,9 @@ function Dialogue({ handleClose, open }) {
     if (courseAuthor === "") {
       errors.courseAuthor = "CourseAuthor is required";
     }
+    if (coursePrice === "") {
+      errors.coursePrice = "CoursePrice is required";
+    }
     if (courseDescription === "") {
       errors.courseDescription = "Course description is required";
     }
@@ -76,6 +81,7 @@ function Dialogue({ handleClose, open }) {
       formData.append("preview", previewVideo);
       formData.append("title", title);
       formData.append("author", courseAuthor);
+      formData.append("price",coursePrice),
       formData.append("description", courseDescription);
       formData.append("courseType", typeOfCourse);
       formData.append("language", selectedLanguages);
@@ -249,6 +255,28 @@ function Dialogue({ handleClose, open }) {
               />
             </Box>
             <Typography sx={{ color: "red" }}>{error?.courseAuthor}</Typography>
+
+
+            <Box sx={{ mt: 1 }}>
+                <Typography
+                  sx={{
+                    mb: 1,
+                    color: "#F1F1F1",
+                    fontWeight: 500,
+                    fontSize: "14px"
+                  }}
+                >
+                  Course Price
+                </Typography>
+                <InputField
+                  label={"Course Price"}
+                  handleChange={(e) => {setCoursePrice(e.target.value)}}
+                  value={coursePrice}
+                />
+              </Box>
+              <Typography sx={{color:"red"}}>{error?.coursePrice}</Typography>
+
+              
 
             <Box sx={{ mt: 1 }}>
               <Typography

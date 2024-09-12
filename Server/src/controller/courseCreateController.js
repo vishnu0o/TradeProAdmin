@@ -28,6 +28,7 @@ export const createCourseController = asyncHandler(async (req, res) => {
       previewVideo: uploadedVideoUrl,
       title: formData?.title,
       author: formData?.author,
+      price:formData?.price,
       description: formData?.description,
       courseType: formData?.courseType,
       language: formData?.language.split(",")

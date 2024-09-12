@@ -16,6 +16,9 @@ const Schema = new mongoose.Schema({
   courseType: {
     type: String,
   },
+  price:{
+    type:String
+  },
   language: {
     type: [String],
   },
