@@ -17,18 +17,24 @@ import { useLocation } from "react-router-dom";
 import EditChapterPopup from "../PopupComponents/EditChapterPopup";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditLessonPopup from "../PopupComponents/EditLessonPopup";
+import AddQuizPopup from "../PopupComponents/AddQuizPopup";
 
 export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
+  const dispatch = useDispatch();
+  const videoRef = React.useRef(null);
+
   // Destructure query parameters
   const id = query.get("id");
-  const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
+
   const [openAddChapter, setOpenAddChapter] = React.useState(false);
   const [openEditChapter, setOpenEditChapter] = React.useState(false);
   const [openEditLesson, setOpenEditLesson] = React.useState(false);
+  const [openAddQuiz, setOpenAddQuiz] = React.useState(false);
+
   const [lesson, setLesson] = React.useState([]);
   const [lessonId, setLessonId] = React.useState("");
   const [chapter, setChapter] = React.useState({});
@@ -48,7 +54,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
   };
   const handleChapterDelete = (chapterId) => {
     console.log({ chapterId });
-
+    
     // chapter delete action
   };
 
@@ -67,6 +73,16 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
   });
 
   React.useEffect(() => {
+    // Ensure the video starts playing when the video URL is available
+    if (videoRef.current ) {
+      videoRef.current.load(); // Load the video
+      videoRef.current.play().catch((error) => {
+        console.error("Autoplay failed:", error);
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
     dispatch(courseFindOneAction(id));
   }, [dispatch, courseLessonCreateSuccess,courseChapterCreateSuccess]);
 
@@ -78,6 +94,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
   console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
 
+  
   return (
     <div>
       {lesson?.map((item, index) => (
@@ -103,8 +120,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
               }}
               sx={{
                 minWidth: "0",
-                width: "50px",
-                height: "30px",
+                width: "35px",
+                height: "32px",
                 color: "#fff",
                 fontSize: "12px",
                 fontWeight: "bold",
@@ -127,8 +144,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
               onClick={() => handleLessonDelete(item._id)}
               sx={{
                 minWidth: "0",
-                width: "50px",
-                height: "30px",
+                width: "35px",
+                height: "32px",
                 color: "#FC0005",
                 fontSize: "12px",
                 fontWeight: "bold",
@@ -176,6 +193,10 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                 Add Chapter
               </Button>
               <Button
+                onClick={() => {
+                  setOpenAddQuiz(true);
+                  setLessonId(item._id);
+                }}
                 sx={{
                   background: "#231F20",
                   textTransform: "capitalize",
@@ -201,6 +222,18 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                   Chapter {index + 1}
                 </Typography>
                 <Box sx={{ mt: 1, display: "flex", alignItems: "center", gap: 1 }}>
+                  <video
+                    ref={videoRef}
+                    width="100"
+                    muted
+                    loop
+                    style={{
+                      borderRadius: "10px",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                    }}
+                  >
+                    <source src={chapter.video} type="video/mp4" />
+                  </video>
                   <Typography
                     sx={{
                       color: "#1C232D",
@@ -266,8 +299,11 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
       ))}
       <AddLessonPopup openAddLesson={openAddLesson} setOpenAddLesson={setOpenAddLesson} />
       <EditLessonPopup lesson={selectedLesson} openEditLesson={openEditLesson} setOpenEditLesson={setOpenEditLesson} />
+
       <AddChapterPopup lessonId={lessonId} openAddChapter={openAddChapter} setOpenAddChapter={setOpenAddChapter} />
       <EditChapterPopup lessonId={lessonId} chapter={chapter} openEditChapter={openEditChapter} setOpenEditChapter={setOpenEditChapter} />
+
+      <AddQuizPopup lessonId={lessonId} openAddQuiz={openAddQuiz} setOpenAddQuiz={setOpenAddQuiz} />
     </div>
   );
 }
