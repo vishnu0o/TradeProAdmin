@@ -28,6 +28,8 @@ const EditCourse = ({ selectedCourse }) => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [previewVideo, setUploadPreview] = useState();
   const [courseAuthor, setCourseAuthor] = useState("");
+  const [coursePrice, setCoursePrice] = useState("");
+
   const [courseDescription, setCourseDescription] = useState("");
   const [typeOfCourse, setTypeOfCourse] = useState("");
   const [error, setError] = useState({});
@@ -53,6 +55,10 @@ const EditCourse = ({ selectedCourse }) => {
     if (courseAuthor === "") {
       errors.courseAuthor = "CourseAuthor is required";
     }
+
+    if (coursePrice === "") {
+      errors.coursePrice = "coursePrice is required";
+    }
     if (courseDescription === "") {
       errors.courseDescription = "Course description is required";
     }
@@ -74,6 +80,7 @@ const EditCourse = ({ selectedCourse }) => {
       formData.append("preview", previewVideo);
       formData.append("title", title),
         formData.append("author", courseAuthor),
+        formData.append("price", coursePrice),
         formData.append("description", courseDescription),
         formData.append("courseType", typeOfCourse),
         formData.append("language", selectedLanguages);
@@ -88,6 +95,7 @@ const EditCourse = ({ selectedCourse }) => {
     setSelectedLanguages(selectedCourse.language);
     setUploadPreview(selectedCourse.previewVideo);
     setCourseAuthor(selectedCourse.author);
+    setCoursePrice(selectedCourse.price);
     setCourseDescription(selectedCourse.description);
     setTypeOfCourse(selectedCourse.courseType);
   }, [selectedCourse]);
@@ -222,6 +230,28 @@ const EditCourse = ({ selectedCourse }) => {
         />
       </Box>
       <Typography sx={{ color: "red" }}>{error?.title}</Typography>
+
+      
+      <Box sx={{ mt: 2 }}>
+        <Typography
+          sx={{
+            mb: 1,
+            color: "#000",
+            fontWeight: 700,
+            fontSize: "14px"
+          }}
+        >
+          Course Price
+        </Typography>
+        <InputField
+          label="Course price"
+          handleChange={(e) => setCoursePrice(e.target.value)}
+          value={coursePrice}
+          bgcolor="#F3F6F9"
+          color="#000"
+        />
+      </Box>
+      <Typography sx={{ color: "red" }}>{error?.coursePrice}</Typography>
       <Box sx={{ mt: 2 }}>
         <Typography
           sx={{

@@ -68,7 +68,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
     return state.courseLessonCreate;
   });
 
-  let { courseChapterCreateSuccess } = useSelector((state) => {
+  let { courseChapterCreateLoading,courseChapterCreateSuccess } = useSelector((state) => {
     return state.courseChapterCreate;
   });
 

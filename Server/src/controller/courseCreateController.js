@@ -148,32 +148,30 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
 });
 
 
-// // @desc    Course Lesson update
-// // @route   post /api/course/updateLesson
-// // @access  user
+// @desc    Course Lesson update
+// @route   post /api/course/updateLesson
+// @access  user
 
-// export const createCourseLessonController = asyncHandler(async (req, res) => {
-//   try {
-//     const { lesson, id } = req.body;
+export const updateCourseLessonController = asyncHandler(async (req, res) => {
+  try {
+    const { lesson, courseId,lessonId } = req.body;
 
-//     const findCourse = await Courses.findOne({ _id: id });
-
-//     const createLesson = await Courses.updateOne(
-//       { _id: id },
-//       {
-//         $push: {
-//           lessons: { lessonName: lesson }
-//         }
-//       }
-//     );
-//     res
-//       .status(200)
-//       .json({ message: "Lesson created successfully", status: findCourse });
-//   } catch (error) {
-//     console.log(error, "error");
-//     res.status(500).json({ message: "Something went wrong", data: error });
-//   }
-// });
+    const updateLesson = await Courses.updateOne(
+      { _id: courseId, "lessons._id": lessonId },
+      {
+        $set: {
+          "lessons.$.lessonName": lesson
+        }
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Lesson updated successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
 
 
 

@@ -5,7 +5,8 @@ import {
   createCourseLessonController,
   editCourseController,
   findCourseController,
-  findOneCourseController
+  findOneCourseController,
+  updateCourseLessonController
 } from "../controller/courseCreateController.js";
 import upload from "../utils/multer.js";
 const router = express.Router();
@@ -20,6 +21,8 @@ router
   .put(upload.single("preview"), editCourseController);
 
 router.route("/createLesson").post(createCourseLessonController);
+router.route("/updateLesson").put(updateCourseLessonController);
+
 router.route("/createChapter").post(upload.single("chapter"),createCourseChapterController);
 
 
