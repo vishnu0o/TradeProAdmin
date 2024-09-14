@@ -204,7 +204,7 @@ const ManageCoursePage = () => {
           {/* Main Content */}
           <Grid item xs={12} sm={9} md={9} style={{ paddingLeft: 10 }}>
             <div
-              style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}
+              style={{ backgroundColor: selectedCourseItem?.name === manageCourseItems[2].name ? "transparent":"#fff", borderRadius: 10, padding: 20 }}
             >
               {selectedCourseItem?.name === manageCourseItems[0].name ? (
                 <EditCourse selectedCourse={selectedCourse} />
@@ -215,7 +215,7 @@ const ManageCoursePage = () => {
                   selectedCourse={selectedCourse}
                 />
               ) : selectedCourseItem?.name === manageCourseItems[2].name ? (
-                <Certificates selectedCourse={selectedCourse} />
+                <Certificates/>
               ) : null}
             </div>
           </Grid>
