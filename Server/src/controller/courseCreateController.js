@@ -24,6 +24,12 @@ export const createCourseController = asyncHandler(async (req, res) => {
         contentType
       );
     }
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
     const createCourse = await Courses.create({
       previewVideo: uploadedVideoUrl,
       title: formData?.title,
@@ -31,6 +37,8 @@ export const createCourseController = asyncHandler(async (req, res) => {
       price:formData?.price,
       description: formData?.description,
       courseType: formData?.courseType,
+      publishedYear:formattedDate,
+      courseDuration:formData?.courseDuration,
       language: formData?.language.split(",")
     });
     res
@@ -109,6 +117,8 @@ export const editCourseController = asyncHandler(async (req, res) => {
           author: formData?.author,
           description: formData?.description,
           courseType: formData?.courseType,
+          publishedYear:formData?.publishedYear,
+          courseDuration:formData?.courseDuration,
           language: formData?.language.split(",")
         }
       }

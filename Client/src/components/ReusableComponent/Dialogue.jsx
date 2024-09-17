@@ -1,30 +1,28 @@
-  import {
-    Box,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Paper,
-    Radio,
-    RadioGroup,
-    Typography
-  } from "@mui/material";
-  import React, { useState } from "react";
-  import { useDispatch} from "react-redux";
-  import Draggable from "react-draggable";
-  import InputField, {
-    SelectInputField
-  } from "../ReusableComponent/Input";
-  import { SubmitButton } from "../ReusableComponent/Button";
-  import TopicUploadComponent from "../ReusableComponent/TopicUploadComponent";
-  import { courseCreateAction } from "../../Redux/Action/courseAction";
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Paper,
+  Radio,
+  RadioGroup,
+  Typography
+} from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import Draggable from "react-draggable";
+import InputField, { SelectInputField } from "../ReusableComponent/Input";
+import { SubmitButton } from "../ReusableComponent/Button";
+import TopicUploadComponent from "../ReusableComponent/TopicUploadComponent";
+import { courseCreateAction } from "../../Redux/Action/courseAction";
 // import { ProductCreateAction } from "../../Redux/Action/productAction";
 
 function Dialogue({ handleClose, open }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [previewVideo, setUploadPreview] = useState();
@@ -32,6 +30,7 @@ function Dialogue({ handleClose, open }) {
   const [courseDescription, setCourseDescription] = useState("");
   const [typeOfCourse, setTypeOfCourse] = useState("Basic");
   const [coursePrice, setCoursePrice] = useState("");
+  const [courseDuration, setCourseDuration] = useState("");
 
   const [error, setError] = useState({});
 
@@ -61,6 +60,9 @@ function Dialogue({ handleClose, open }) {
     if (coursePrice === "") {
       errors.coursePrice = "CoursePrice is required";
     }
+    if (courseDuration === "") {
+      errors.courseDuration = "course duration is required";
+    }
     if (courseDescription === "") {
       errors.courseDescription = "Course description is required";
     }
@@ -77,19 +79,21 @@ function Dialogue({ handleClose, open }) {
 
   const handleSubmit = () => {
     if (validate()) {
+    
       const formData = new FormData();
       formData.append("preview", previewVideo);
       formData.append("title", title);
       formData.append("author", courseAuthor);
-      formData.append("price",coursePrice),
-      formData.append("description", courseDescription);
+      formData.append("price", coursePrice),
+        formData.append("courseDuration", courseDuration),
+        formData.append("description", courseDescription);
       formData.append("courseType", typeOfCourse);
       formData.append("language", selectedLanguages);
       dispatch(courseCreateAction(formData));
       handleClose();
     }
   };
-  
+
   return (
     <div>
       <Dialog
@@ -256,27 +260,51 @@ function Dialogue({ handleClose, open }) {
             </Box>
             <Typography sx={{ color: "red" }}>{error?.courseAuthor}</Typography>
 
+            <Box sx={{ mt: 1 }}>
+              <Typography
+                sx={{
+                  mb: 1,
+                  color: "#F1F1F1",
+                  fontWeight: 500,
+                  fontSize: "14px"
+                }}
+              >
+                Course Price
+              </Typography>
+              <InputField
+                label={"Course Price"}
+                handleChange={(e) => {
+                  setCoursePrice(e.target.value);
+                }}
+                value={coursePrice}
+              />
+            </Box>
+            <Typography sx={{ color: "red" }}>{error?.coursePrice}</Typography>
 
             <Box sx={{ mt: 1 }}>
-                <Typography
-                  sx={{
-                    mb: 1,
-                    color: "#F1F1F1",
-                    fontWeight: 500,
-                    fontSize: "14px"
-                  }}
-                >
-                  Course Price
-                </Typography>
-                <InputField
-                  label={"Course Price"}
-                  handleChange={(e) => {setCoursePrice(e.target.value)}}
-                  value={coursePrice}
-                />
-              </Box>
-              <Typography sx={{color:"red"}}>{error?.coursePrice}</Typography>
+              <Typography
+                sx={{
+                  mb: 1,
+                  color: "#F1F1F1",
+                  fontWeight: 500,
+                  fontSize: "14px"
+                }}
+              >
+                Course Duration
+              </Typography>
+              <InputField
+                label={"Course Duration"}
+                handleChange={(e) => {
+                  setCourseDuration(e.target.value);
+                }}
+                value={courseDuration}
+              />
+            </Box>
+            <Typography sx={{ color: "red" }}>
+              {error?.courseDuration}
+            </Typography>
 
-              
+           
 
             <Box sx={{ mt: 1 }}>
               <Typography
@@ -295,23 +323,22 @@ function Dialogue({ handleClose, open }) {
                 value={courseDescription}
               /> */}
               <textarea
-              placeholder="Course description"
-              value={courseDescription}
-              style={{
-                height: "173px",
-                width: "100%",
-                marginBottom: "10px",
-                boxSizing:"border-box",
-                fontFamily:"'IBM Plex Sans', sans-serif",
-                fontWeight:400,
-                lineHeight:1.5,
-                padding:"8px 12px",
-                background:"#3F3F46",
-                color:"white"
-
-              }}
-              onChange={(e) => setCourseDescription(e.target.value)}
-            />
+                placeholder="Course description"
+                value={courseDescription}
+                style={{
+                  height: "173px",
+                  width: "100%",
+                  marginBottom: "10px",
+                  boxSizing: "border-box",
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  fontWeight: 400,
+                  lineHeight: 1.5,
+                  padding: "8px 12px",
+                  background: "#3F3F46",
+                  color: "white"
+                }}
+                onChange={(e) => setCourseDescription(e.target.value)}
+              />
             </Box>
             <Typography sx={{ color: "red" }}>
               {error?.courseDescription}
