@@ -34,11 +34,11 @@ export const createCourseController = asyncHandler(async (req, res) => {
       previewVideo: uploadedVideoUrl,
       title: formData?.title,
       author: formData?.author,
-      price:formData?.price,
+      price: formData?.price,
       description: formData?.description,
       courseType: formData?.courseType,
-      publishedYear:formattedDate,
-      courseDuration:formData?.courseDuration,
+      publishedYear: formattedDate,
+      courseDuration: formData?.courseDuration,
       language: formData?.language.split(",")
     });
     res
@@ -66,15 +66,14 @@ export const findCourseController = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Course FindOne
 // @route   post /api/course/findOneCourse
 // @access  user
 
 export const findOneCourseController = asyncHandler(async (req, res) => {
   try {
-    const{id} = req.query
-    const findCourse = await Courses.findOne({_id:id});
+    const { id } = req.query;
+    const findCourse = await Courses.findOne({ _id: id });
     res
       .status(200)
       .json({ message: "course find successfully", data: findCourse });
@@ -117,8 +116,8 @@ export const editCourseController = asyncHandler(async (req, res) => {
           author: formData?.author,
           description: formData?.description,
           courseType: formData?.courseType,
-          publishedYear:formData?.publishedYear,
-          courseDuration:formData?.courseDuration,
+          publishedYear: formData?.publishedYear,
+          courseDuration: formData?.courseDuration,
           language: formData?.language.split(",")
         }
       }
@@ -157,14 +156,13 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Course Lesson update
 // @route   post /api/course/updateLesson
 // @access  user
 
 export const updateCourseLessonController = asyncHandler(async (req, res) => {
   try {
-    const { lesson, courseId,lessonId } = req.body;
+    const { lesson, courseId, lessonId } = req.body;
 
     const updateLesson = await Courses.updateOne(
       { _id: courseId, "lessons._id": lessonId },
@@ -183,7 +181,26 @@ export const updateCourseLessonController = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Course Lesson Delete
+// @route   post /api/course/deleteLesson
+// @access  user
 
+export const deleteCourseLessonController = asyncHandler(async (req, res) => {
+  try {
+    const { courseId, lessonId } = req.body;
+
+    const updateLesson = await Courses.deleteOne({
+      _id: courseId,
+      "lessons._id": lessonId
+    });
+    res
+      .status(200)
+      .json({ message: "Lesson deleted successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
 
 // @desc    Course Chapter create
 // @route   post /api/course/createChapter
@@ -192,8 +209,8 @@ export const updateCourseLessonController = asyncHandler(async (req, res) => {
 export const createCourseChapterController = asyncHandler(async (req, res) => {
   try {
     // const { chapterTitle,chapterVideo, id,lessonId } = req.body;
-    const formData = req.body
-    console.log(formData,"formDataaaaaaaaaaaaaaaaaaaa")
+    const formData = req.body;
+    console.log(formData, "formDataaaaaaaaaaaaaaaaaaaa");
     let uploadedVideoUrl;
     if (req.file) {
       const fileData = fs.readFileSync(req.file.path);
@@ -209,7 +226,7 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
     }
 
     const createChapter = await Courses.updateOne(
-      { _id: formData?.id, "lessons._id": formData?.lessonId }, 
+      { _id: formData?.id, "lessons._id": formData?.lessonId },
       {
         $push: {
           "lessons.$.chapters": {
@@ -222,6 +239,75 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
     res
       .status(200)
       .json({ message: "Chapter created successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
+
+// @desc    Course Chapter update
+// @route   post /api/course/updateChapter
+// @access  user
+
+export const updateCourseChapterController = asyncHandler(async (req, res) => {
+  try {
+    const { courseId, lessonId, chapterId, updatedChapter } = req.body;
+
+    const formData = req.body;
+    console.log(formData, "formDataaaaaaaaaaaaaaaaaaaa");
+    let uploadedVideoUrl;
+    if (req.file) {
+      const fileData = fs.readFileSync(req.file.path);
+      const fileName = `TradeProCourseChapterVideo${req.file.filename}`;
+      const folderName = "ChapterVideo";
+      const contentType = req.file.mimetype;
+      uploadedVideoUrl = await uploadFileToS3(
+        fileData,
+        fileName,
+        folderName,
+        contentType
+      );
+    }
+    const updateLesson = await Courses.updateOne(
+      {
+        _id: formData?.courseId,
+        "lessons._id": formData?.lessonId,
+        "lessons.chapters._id": formData?.chapterId
+      },
+      {
+        $set: {
+          "lessons.$[lesson].chapters.$[chapter]": {
+            title: formData?.updatedChapter,
+            video: uploadedVideoUrl ? uploadedVideoUrl : formData?.updatedVideo
+          }
+        }
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Chapter updated successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
+
+// @desc    Course Chapter Delete
+// @route   post /api/course/deleteChapter
+// @access  user
+
+export const deleteCourseChapterController = asyncHandler(async (req, res) => {
+  try {
+    const { courseId, lessonId, chapterId, updatedChapter } = req.body;
+
+    const updateLesson = await Courses.deleteOne({
+      _id: courseId,
+      "lessons._id": lessonId,
+      "lessons.chapters._id": chapterId
+    });
+    res
+      .status(200)
+      .json({ message: "Chapter Deleted successfully", status: true });
   } catch (error) {
     console.log(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });

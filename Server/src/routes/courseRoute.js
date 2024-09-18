@@ -3,9 +3,12 @@ import {
     createCourseChapterController,
   createCourseController,
   createCourseLessonController,
+  deleteCourseChapterController,
+  deleteCourseLessonController,
   editCourseController,
   findCourseController,
   findOneCourseController,
+  updateCourseChapterController,
   updateCourseLessonController
 } from "../controller/courseCreateController.js";
 import upload from "../utils/multer.js";
@@ -20,10 +23,17 @@ router
   .route("/editCourse")
   .put(upload.single("preview"), editCourseController);
 
+
 router.route("/createLesson").post(createCourseLessonController);
 router.route("/updateLesson").put(updateCourseLessonController);
+router.route("/deleteLesson").delete(deleteCourseLessonController);
+
 
 router.route("/createChapter").post(upload.single("chapter"),createCourseChapterController);
+router.route("/updateChapter").put(upload.single("updatedVideo"),updateCourseChapterController);
+router.route("/deleteChapter").delete(deleteCourseChapterController);
+
+
 
 
 
