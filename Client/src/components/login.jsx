@@ -9,7 +9,7 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  CssBaseline,
+  CssBaseline
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -64,7 +64,7 @@ function Login() {
   return (
     <>
       <CssBaseline />
-      <AppBar position="static" color="transparent" elevation={0}>
+      {/* <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h6" component="div">
             DEMO
@@ -78,65 +78,74 @@ function Login() {
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            minHeight: "100vh", // Full viewport height
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            justifyContent: "center", // Center vertically
+            alignItems: "center" // Center horizontally
           }}
         >
-          <Typography component="h1" variant="h5">
-            Login to your account
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            align="center"
-            sx={{ mt: 1, mb: 2 }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
           >
-            Lorem ipsum dolor sit amet consectetur. Sapien ut libero sed lacinia
-            egestas placerat ut sagittis nec.
-          </Typography>
-          <Box component="" sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email ID"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleLoginSubmit}
+            <img src="./Logo.png"></img>
+            <Typography component="h1" variant="h5">
+              Login to your account
+            </Typography>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              align="center"
+              sx={{ mt: 1, mb: 2 }}
             >
-              LOGIN
-            </Button>
+              Lorem ipsum dolor sit amet consectetur. Sapien ut libero sed
+              lacinia egestas placerat ut sagittis nec.
+            </Typography>
+            <Box sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email ID"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleLoginSubmit}
+              >
+                LOGIN
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Container>
 
-      <Box
+      {/* <Box
         component="footer"
         sx={{
           py: 6,
@@ -186,7 +195,7 @@ function Login() {
         >
           Arab Deals © 2023. All Rights Reserved
         </Typography>
-      </Box>
+      </Box> */}
     </>
   );
 }
