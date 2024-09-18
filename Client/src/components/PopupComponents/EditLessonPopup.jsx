@@ -50,7 +50,7 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
   };
   const handleSubmit = () => {
     if (validate()) {
-      dispatch(courseLessonCreateAction(lessonTitle,id))
+      // dispatch(courseLessonCreateAction(lessonTitle,id))
       handleClose();
     }
   };

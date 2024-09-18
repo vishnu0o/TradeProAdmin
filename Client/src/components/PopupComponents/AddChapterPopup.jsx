@@ -196,7 +196,7 @@ export default function AddChapterPopup({
                 borderRadius: "10px"
               }}
             >
-              Upload File
+              Upload 
             </Typography>
             <input
               type="file"
