@@ -12,14 +12,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddLessonPopup from "../PopupComponents/AddLessonPopup";
 import AddChapterPopup from "../PopupComponents/AddChapterPopup";
 import { useDispatch, useSelector } from "react-redux";
-import { courseFindOneAction } from "../../Redux/Action/courseAction";
+import { courseChapterDeleteAction, courseFindOneAction, courseLessonDeleteAction } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
 import EditChapterPopup from "../PopupComponents/EditChapterPopup";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import EditLessonPopup from "../PopupComponents/EditLessonPopup";
 import AddQuizPopup from "../PopupComponents/AddQuizPopup";
+import TableNoItemComponent from "../ReusableComponent/TableNoItemComponent";
 
-export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }) {
+export default function ControlledAccordions({
+  openAddLesson,
+  setOpenAddLesson
+}) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
@@ -47,15 +51,12 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
     setExpanded(isExpanded ? panel : false);
   };
 
-  const handleLessonDelete = (id) => {
-    console.log("leeeeeeeeeeeeeeeeeeeeee", { id });
-
-    // lesson delete action
+  const handleLessonDelete = (lessonId) => {
+    dispatch(courseLessonDeleteAction(id,lessonId))
   };
-  const handleChapterDelete = (chapterId) => {
+  const handleChapterDelete = (chapterId,lessonId) => {
     console.log({ chapterId });
-    
-    // chapter delete action
+    dispatch(courseChapterDeleteAction(id,lessonId,chapterId))
   };
 
   // Reducer ::::::::::::::::::
@@ -68,13 +69,37 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
     return state.courseLessonCreate;
   });
 
-  let { courseChapterCreateLoading,courseChapterCreateSuccess } = useSelector((state) => {
-    return state.courseChapterCreate;
+  let { courseLessonUpdateSuccess } = useSelector((state) => {
+    return state.courseLessonUpdate;
   });
+
+  let { courseLessonDeleteSuccess } = useSelector((state) => {
+    return state.courseLessonDelete;
+  });
+
+
+  let { courseChapterCreateLoading, courseChapterCreateSuccess } = useSelector(
+    (state) => {
+      return state.courseChapterCreate;
+    }
+  );
+
+
+  let { courseChapterUpdateLoading,courseChapterUpdateSuccess } = useSelector(
+    (state) => {
+      return state.courseChapterUpdate;
+    }
+  );
+
+  let { courseChapterDeleteSuccess } = useSelector(
+    (state) => {
+      return state.courseChapterDelete;
+    }
+  );
 
   React.useEffect(() => {
     // Ensure the video starts playing when the video URL is available
-    if (videoRef.current ) {
+    if (videoRef.current) {
       videoRef.current.load(); // Load the video
       videoRef.current.play().catch((error) => {
         console.error("Autoplay failed:", error);
@@ -84,7 +109,15 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
-  }, [dispatch, courseLessonCreateSuccess,courseChapterCreateSuccess]);
+  }, [
+    dispatch,
+    courseLessonCreateSuccess,
+    courseChapterCreateSuccess,
+    courseLessonUpdateSuccess,
+    courseLessonDeleteSuccess,
+    courseChapterUpdateSuccess,
+
+  ]);
 
   React.useEffect(() => {
     if (courseFindOneSuccess) {
@@ -92,24 +125,30 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
     }
   }, [courseFindOneSuccess]);
 
-  console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
+  console.log(lesson, "lessonlessonlessonlesson");
 
-  
   return (
     <div>
+
+      {lesson?.length == 0 && <TableNoItemComponent />}
       {lesson?.map((item, index) => (
         <Accordion
           sx={{
             background: "#000",
             mb: 1,
             borderRadius: 1,
-            boxShadow: "0 0 10px #ddd",
+            boxShadow: "0 0 10px #ddd"
           }}
           key={index}
           expanded={expanded === `panel${index + 1}`}
           onChange={handleChange(`panel${index + 1}`)}
         >
-          <AccordionSummary sx={{ color: "#fff" }} expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />} aria-controls={`panel${index + 1}bh-content`} id={`panel${index + 1}bh-header`}>
+          <AccordionSummary
+            sx={{ color: "#fff" }}
+            expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
+            aria-controls={`panel${index + 1}bh-content`}
+            id={`panel${index + 1}bh-header`}
+          >
             <Typography sx={{ width: "90%", flexShrink: 0 }}>
               <MenuIcon sx={{ mr: 1 }} /> Lesson {index + 1} - {item.lessonName}
             </Typography>
@@ -133,8 +172,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
                 "&:hover": {
                   boxShadow: "none ",
-                  backgroundColor: "rgba(225, 225, 225, .2)",
-                },
+                  backgroundColor: "rgba(225, 225, 225, .2)"
+                }
               }}
               variant="contained"
             >
@@ -157,8 +196,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
                 "&:hover": {
                   boxShadow: "none ",
-                  backgroundColor: "rgba(252, 0, 5, .2)",
-                },
+                  backgroundColor: "rgba(252, 0, 5, .2)"
+                }
               }}
               variant="contained"
             >
@@ -171,7 +210,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                 width: "100%",
                 display: "flex",
                 justifyContent: "end",
-                padding: "10px",
+                padding: "10px"
               }}
             >
               <Button
@@ -184,8 +223,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                   textTransform: "capitalize",
                   mr: 1,
                   "&:hover": {
-                    backgroundColor: "#231F20",
-                  },
+                    backgroundColor: "#231F20"
+                  }
                 }}
                 variant="contained"
               >
@@ -202,8 +241,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                   textTransform: "capitalize",
                   mr: 1,
                   "&:hover": {
-                    backgroundColor: "#231F20",
-                  },
+                    backgroundColor: "#231F20"
+                  }
                 }}
                 variant="contained"
               >
@@ -216,12 +255,14 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                 <Typography
                   sx={{
                     fontWeight: "bold",
-                    fontSize: "14px",
+                    fontSize: "14px"
                   }}
                 >
                   Chapter {index + 1}
                 </Typography>
-                <Box sx={{ mt: 1, display: "flex", alignItems: "center", gap: 1 }}>
+                <Box
+                  sx={{ mt: 1, display: "flex", alignItems: "center", gap: 1 }}
+                >
                   <video
                     ref={videoRef}
                     width="100"
@@ -229,7 +270,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                     loop
                     style={{
                       borderRadius: "10px",
-                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)"
                     }}
                   >
                     <source src={chapter.video} type="video/mp4" />
@@ -242,7 +283,7 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                       width: "100%",
                       p: 1,
                       borderRadius: "5px",
-                      textTransform: "capitalize",
+                      textTransform: "capitalize"
                     }}
                   >
                     {chapter.title}
@@ -260,15 +301,15 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
                       background: "#6255FA30",
                       textTransform: "capitalize",
                       "&:hover": {
-                        backgroundColor: "rgba(98, 85, 250, 0.5)",
-                      },
+                        backgroundColor: "rgba(98, 85, 250, 0.5)"
+                      }
                     }}
                     variant="contained"
                   >
                     Edit
                   </Button>
                   <Button
-                    onClick={() => handleChapterDelete(chapter._id)}
+                    onClick={() => handleChapterDelete(chapter._id,item?._id)}
                     sx={{
                       minWidth: "0",
                       width: "43px",
@@ -284,8 +325,8 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
 
                       "&:hover": {
                         boxShadow: "none ",
-                        backgroundColor: "transparent",
-                      },
+                        backgroundColor: "transparent"
+                      }
                     }}
                     variant="contained"
                   >
@@ -297,13 +338,33 @@ export default function ControlledAccordions({ openAddLesson, setOpenAddLesson }
           </AccordionDetails>
         </Accordion>
       ))}
-      <AddLessonPopup openAddLesson={openAddLesson} setOpenAddLesson={setOpenAddLesson} />
-      <EditLessonPopup lesson={selectedLesson} openEditLesson={openEditLesson} setOpenEditLesson={setOpenEditLesson} />
+      <AddLessonPopup
+        openAddLesson={openAddLesson}
+        setOpenAddLesson={setOpenAddLesson}
+      />
+      <EditLessonPopup
+        lesson={selectedLesson}
+        openEditLesson={openEditLesson}
+        setOpenEditLesson={setOpenEditLesson}
+      />
 
-      <AddChapterPopup lessonId={lessonId} openAddChapter={openAddChapter} setOpenAddChapter={setOpenAddChapter} />
-      <EditChapterPopup lessonId={lessonId} chapter={chapter} openEditChapter={openEditChapter} setOpenEditChapter={setOpenEditChapter} />
+      <AddChapterPopup
+        lessonId={lessonId}
+        openAddChapter={openAddChapter}
+        setOpenAddChapter={setOpenAddChapter}
+      />
+      <EditChapterPopup
+        lessonId={lessonId}
+        chapter={chapter}
+        openEditChapter={openEditChapter}
+        setOpenEditChapter={setOpenEditChapter}
+      />
 
-      <AddQuizPopup lessonId={lessonId} openAddQuiz={openAddQuiz} setOpenAddQuiz={setOpenAddQuiz} />
+      <AddQuizPopup
+        lessonId={lessonId}
+        openAddQuiz={openAddQuiz}
+        setOpenAddQuiz={setOpenAddQuiz}
+      />
     </div>
   );
 }

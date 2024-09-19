@@ -12,19 +12,24 @@ import { Box, Divider, FormLabel } from "@mui/material";
 import InputField from "../ReusableComponent/Input";
 import { SubmitButton } from "../ReusableComponent/Button";
 import { useDispatch } from "react-redux";
-import { courseChapterCreateAction } from "../../Redux/Action/courseAction";
+import { courseChapterCreateAction, courseChapterUpdateAction } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }));
 
-export default function EditChapterPopup({ lessonId, chapter, openEditChapter, setOpenEditChapter }) {
+export default function EditChapterPopup({
+  lessonId,
+  chapter,
+  openEditChapter,
+  setOpenEditChapter
+}) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
@@ -59,14 +64,12 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
   const handleSubmit = () => {
     if (validate()) {
       const formData = new FormData();
-      formData.append("chapterTitle", chapterTitle);
-      formData.append("chapter", chapterVideo);
-      formData.append("id", id);
+      formData.append("updatedChapter", chapterTitle);
+      formData.append("updatedVideo", chapterVideo);
+      formData.append("courseId", id);
       formData.append("lessonId", lessonId);
       formData.append("chapterId", chapter._id);
-
-      // edit chapter action
-
+      dispatch(courseChapterUpdateAction(formData))
       handleClose();
     }
   };
@@ -96,8 +99,8 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
             display: "flex",
             flexDirection: "column",
             minWidth: "820px",
-            backgroundColor: "black",
-          },
+            backgroundColor: "black"
+          }
         }}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -115,8 +118,8 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
             top: 8,
             color: theme.palette.grey[600],
             "&:hover": {
-              color: "#fff",
-            },
+              color: "#fff"
+            }
           })}
         >
           <CloseIcon />
@@ -128,7 +131,7 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
             opacity: 0.2,
             ml: 2,
             mr: 2,
-            mb: 1,
+            mb: 1
           }}
         />
         <DialogContent dividers>
@@ -138,16 +141,22 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
                 mb: 1,
                 color: "#F1F1F1",
                 fontWeight: 500,
-                fontSize: "14px",
+                fontSize: "14px"
               }}
             >
               Chapter Title
             </Typography>
-            <InputField label="Chapter title" handleChange={(e) => setChapterTitle(e.target.value)} value={chapterTitle} />
+            <InputField
+              label="Chapter title"
+              handleChange={(e) => setChapterTitle(e.target.value)}
+              value={chapterTitle}
+            />
           </Box>
           <Typography sx={{ color: "red" }}>{error?.chapterTitle}</Typography>
 
-          <Typography sx={{ color: "#fff", mt: 2, mb: 1, fontSize: "14px" }}>Upload Video</Typography>
+          <Typography sx={{ color: "#fff", mt: 2, mb: 1, fontSize: "14px" }}>
+            Upload Video
+          </Typography>
           <FormLabel
             sx={{
               boxSizing: "border-box",
@@ -158,7 +167,7 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
               width: "100%",
               cursor: "pointer",
               borderRadius: "4px",
-              background: "#3F3F46",
+              background: "#3F3F46"
             }}
           >
             <video
@@ -167,11 +176,18 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
               muted
               loop
               style={{
-                borderRadius: "4px",
+                borderRadius: "4px"
                 // boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
               }}
             >
-              <source src={typeof chapterVideo === "string" ? chapterVideo : chapterVideo && URL.createObjectURL(chapterVideo)} type="video/mp4" />
+              <source
+                src={
+                  typeof chapterVideo === "string"
+                    ? chapterVideo
+                    : chapterVideo && URL.createObjectURL(chapterVideo)
+                }
+                type="video/mp4"
+              />
             </video>
 
             <Typography
@@ -182,7 +198,7 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
                 lineHeight: "24px",
                 // backgroundColor: "#6255FA",
                 padding: "10px 30px",
-                borderRadius: "10px",
+                borderRadius: "10px"
               }}
             >
               Upload File
@@ -200,10 +216,19 @@ export default function EditChapterPopup({ lessonId, chapter, openEditChapter, s
         </DialogContent>
         <DialogActions
           style={{
-            padding: "0 17px 30px ",
+            padding: "0 17px 30px "
           }}
         >
-          <SubmitButton title={"Save"} component="addCourse" widthSize="100%" bgColor="#6255FA" borderRadius="4px" heightSize="52px" type="click" handleSubmit={handleSubmit} />
+          <SubmitButton
+            title={"Save"}
+            component="addCourse"
+            widthSize="100%"
+            bgColor="#6255FA"
+            borderRadius="4px"
+            heightSize="52px"
+            type="click"
+            handleSubmit={handleSubmit}
+          />
         </DialogActions>
       </BootstrapDialog>
     </>

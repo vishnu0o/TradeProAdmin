@@ -91,13 +91,13 @@ const EditCourse = ({ selectedCourse }) => {
   };
 
   useEffect(() => {
-    setTitle(selectedCourse.title);
-    setSelectedLanguages(selectedCourse.language);
-    setUploadPreview(selectedCourse.previewVideo);
-    setCourseAuthor(selectedCourse.author);
-    setCoursePrice(selectedCourse.price);
-    setCourseDescription(selectedCourse.description);
-    setTypeOfCourse(selectedCourse.courseType);
+    setTitle(selectedCourse?.title);
+    setSelectedLanguages(selectedCourse?.language);
+    setUploadPreview(selectedCourse?.previewVideo);
+    setCourseAuthor(selectedCourse?.author);
+    setCoursePrice(selectedCourse?.price);
+    setCourseDescription(selectedCourse?.description);
+    setTypeOfCourse(selectedCourse?.courseType);
   }, [selectedCourse]);
 
   useEffect(() => {

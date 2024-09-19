@@ -63,6 +63,12 @@ const ManageCoursePage = () => {
     return state.courseChapterCreate;
   });
 
+  let { courseChapterUpdateLoading,courseChapterUpdateSuccess } = useSelector(
+    (state) => {
+      return state.courseChapterUpdate;
+    }
+  );
+
   useEffect(() => {
     dispatch(courseFindAction());
     setSelectedCourseItem(manageCourseItems[0]);
@@ -77,7 +83,7 @@ const ManageCoursePage = () => {
   }, [courseFindSuccess]);
   return (
     <>
-      {courseChapterCreateLoading && (
+      {courseChapterCreateLoading ||courseChapterUpdateLoading ? (
         <Backdrop
           sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
           open={courseChapterCreateLoading}
@@ -85,7 +91,7 @@ const ManageCoursePage = () => {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-      )}
+      ):""}
       <div
         style={{
           padding: "20px 30px",

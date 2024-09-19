@@ -2,6 +2,12 @@ import {
   COURSE_CHAPTER_CREATE_ERR,
   COURSE_CHAPTER_CREATE_REQUEST,
   COURSE_CHAPTER_CREATE_SUCCESS,
+  COURSE_CHAPTER_DELETE_ERR,
+  COURSE_CHAPTER_DELETE_REQUEST,
+  COURSE_CHAPTER_DELETE_SUCCESS,
+  COURSE_CHAPTER_UPDATE_ERR,
+  COURSE_CHAPTER_UPDATE_REQUEST,
+  COURSE_CHAPTER_UPDATE_SUCCESS,
   COURSE_CREATE_ERR,
   COURSE_CREATE_REQUEST,
   COURSE_CREATE_SUCCESS,
@@ -14,6 +20,12 @@ import {
   COURSE_LESSON_CREATE_ERR,
   COURSE_LESSON_CREATE_REQUEST,
   COURSE_LESSON_CREATE_SUCCESS,
+  COURSE_LESSON_DELETE_ERR,
+  COURSE_LESSON_DELETE_REQUEST,
+  COURSE_LESSON_DELETE_SUCCESS,
+  COURSE_LESSON_UPDATE_ERR,
+  COURSE_LESSON_UPDATE_REQUEST,
+  COURSE_LESSON_UPDATE_SUCCESS,
   COURSE_UPDATE_ERR,
   COURSE_UPDATE_REQUEST,
   COURSE_UPDATE_SUCCESS
@@ -143,6 +155,54 @@ export const courseLessonCreateReducer = (state = {}, action) => {
   }
 };
 
+export const courseLessonUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_LESSON_UPDATE_REQUEST:
+      return {
+        ...state,
+        courseLessonUpdateLoading: true
+      };
+    case COURSE_LESSON_UPDATE_SUCCESS:
+      return {
+        ...state,
+        courseLessonUpdateLoading: false,
+        courseLessonUpdateSuccess: action.payload
+      };
+    case COURSE_LESSON_UPDATE_ERR:
+      return {
+        ...state,
+        courseLessonUpdateLoading: false,
+        courseLessonUpdateErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+
+export const courseLessonDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_LESSON_DELETE_REQUEST:
+      return {
+        ...state,
+        courseLessonDeleteLoading: true
+      };
+    case COURSE_LESSON_DELETE_SUCCESS:
+      return {
+        ...state,
+        courseLessonDeleteLoading: false,
+        courseLessonDeleteSuccess: action.payload
+      };
+    case COURSE_LESSON_DELETE_ERR:
+      return {
+        ...state,
+        courseLessonDeleteLoading: false,
+        courseLessonDeleteErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
 
 export const courseChapterCreateReducer = (state = {}, action) => {
   switch (action.type) {
@@ -162,6 +222,57 @@ export const courseChapterCreateReducer = (state = {}, action) => {
         ...state,
         courseChapterCreateLoading: false,
         courseChapterCreateErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+
+
+export const courseChapterUpdateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_CHAPTER_UPDATE_REQUEST:
+      return {
+        ...state,
+        courseChapterUpdateLoading: true
+      };
+    case COURSE_CHAPTER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        courseChapterUpdateLoading: false,
+        courseChapterUpdateSuccess: action.payload
+      };
+    case COURSE_CHAPTER_UPDATE_ERR:
+      return {
+        ...state,
+        courseChapterUpdateLoading: false,
+        courseChapterUpdateErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+
+export const courseChapterDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_CHAPTER_DELETE_REQUEST:
+      return {
+        ...state,
+        courseChapterDeleteLoading: true
+      };
+    case COURSE_CHAPTER_DELETE_SUCCESS:
+      return {
+        ...state,
+        courseChapterDeleteLoading: false,
+        courseChapterDeleteSuccess: action.payload
+      };
+    case COURSE_CHAPTER_DELETE_ERR:
+      return {
+        ...state,
+        courseChapterDeleteLoading: false,
+        courseChapterDeleteErr: action.payload
       };
     default:
       return state;

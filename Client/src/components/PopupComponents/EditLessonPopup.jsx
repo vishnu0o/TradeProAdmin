@@ -13,18 +13,22 @@ import InputField from "../ReusableComponent/Input";
 import { SubmitButton } from "../ReusableComponent/Button";
 import { useFetcher, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { courseLessonCreateAction } from "../../Redux/Action/courseAction";
+import { courseLessonCreateAction, courseLessonUpdateAction } from "../../Redux/Action/courseAction";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
+    padding: theme.spacing(1)
+  }
 }));
 
-export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLesson }) {
+export default function EditLessonPopup({
+  lesson,
+  openEditLesson,
+  setOpenEditLesson
+}) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
@@ -50,7 +54,7 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
   };
   const handleSubmit = () => {
     if (validate()) {
-      // dispatch(courseLessonCreateAction(lessonTitle,id))
+      dispatch(courseLessonUpdateAction(lessonTitle,id,lesson?._id))
       handleClose();
     }
   };
@@ -69,8 +73,8 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
             display: "flex",
             flexDirection: "column",
             minWidth: "820px",
-            backgroundColor: "black",
-          },
+            backgroundColor: "black"
+          }
         }}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -88,8 +92,8 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
             top: 8,
             color: theme.palette.grey[600],
             "&:hover": {
-              color: "#fff",
-            },
+              color: "#fff"
+            }
           })}
         >
           <CloseIcon />
@@ -101,7 +105,7 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
             opacity: 0.2,
             ml: 2,
             mr: 2,
-            mb: 1,
+            mb: 1
           }}
         />
         <DialogContent dividers>
@@ -111,21 +115,34 @@ export default function EditLessonPopup({ lesson, openEditLesson, setOpenEditLes
                 mb: 1,
                 color: "#F1F1F1",
                 fontWeight: 500,
-                fontSize: "14px",
+                fontSize: "14px"
               }}
             >
               Lesson Title
             </Typography>
-            <InputField label="Lesson title" handleChange={(e) => setLessonTitle(e.target.value)} value={lessonTitle} />
+            <InputField
+              label="Lesson title"
+              handleChange={(e) => setLessonTitle(e.target.value)}
+              value={lessonTitle}
+            />
           </Box>
           <Typography sx={{ color: "red" }}>{error?.lessonTitle}</Typography>
         </DialogContent>
         <DialogActions
           style={{
-            padding: "0 17px 30px ",
+            padding: "0 17px 30px "
           }}
         >
-          <SubmitButton title={"Save"} component="addCourse" widthSize="100%" bgColor="#6255FA" borderRadius="4px" heightSize="52px" type="click" handleSubmit={handleSubmit} />
+          <SubmitButton
+            title={"Save"}
+            component="addCourse"
+            widthSize="100%"
+            bgColor="#6255FA"
+            borderRadius="4px"
+            heightSize="52px"
+            type="click"
+            handleSubmit={handleSubmit}
+          />
         </DialogActions>
       </BootstrapDialog>
     </>

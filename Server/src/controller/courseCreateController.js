@@ -157,7 +157,7 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
 });
 
 // @desc    Course Lesson update
-// @route   post /api/course/updateLesson
+// @route   PUT /api/course/updateLesson
 // @access  user
 
 export const updateCourseLessonController = asyncHandler(async (req, res) => {
@@ -187,17 +187,20 @@ export const updateCourseLessonController = asyncHandler(async (req, res) => {
 
 export const deleteCourseLessonController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId } = req.body;
+    const { courseId, lessonId } = req.query;
 
-    const updateLesson = await Courses.deleteOne({
-      _id: courseId,
-      "lessons._id": lessonId
-    });
-    res
-      .status(200)
-      .json({ message: "Lesson deleted successfully", status: true });
+    const updateCourse = await Courses.updateOne(
+      { _id: courseId },
+      { $pull: { lessons: { _id: lessonId } } }
+    );
+
+    if (updateCourse.nModified === 0) {
+      return res.status(404).json({ message: "Lesson not found or already deleted", status: false });
+    }
+
+    res.status(200).json({ message: "Lesson deleted successfully", status: true });
   } catch (error) {
-    console.log(error, "error");
+    console.error(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });
   }
 });
@@ -251,8 +254,6 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
 
 export const updateCourseChapterController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId, chapterId, updatedChapter } = req.body;
-
     const formData = req.body;
     console.log(formData, "formDataaaaaaaaaaaaaaaaaaaa");
     let uploadedVideoUrl;
@@ -276,11 +277,15 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
       },
       {
         $set: {
-          "lessons.$[lesson].chapters.$[chapter]": {
-            title: formData?.updatedChapter,
-            video: uploadedVideoUrl ? uploadedVideoUrl : formData?.updatedVideo
-          }
+          "lessons.$[lesson].chapters.$[chapter].title": formData?.updatedChapter,
+          "lessons.$[lesson].chapters.$[chapter].video": uploadedVideoUrl ? uploadedVideoUrl : formData?.updatedVideo
         }
+      },
+      {
+        arrayFilters: [
+          { "lesson._id": formData?.lessonId },   // Match lesson by ID
+          { "chapter._id": formData?.chapterId }, // Match chapter by ID
+        ],
       }
     );
     res
@@ -298,13 +303,18 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
 
 export const deleteCourseChapterController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId, chapterId, updatedChapter } = req.body;
-
-    const updateLesson = await Courses.deleteOne({
-      _id: courseId,
-      "lessons._id": lessonId,
-      "lessons.chapters._id": chapterId
-    });
+    const { courseId, lessonId, chapterId, } = req.query;
+    const updateCourse = await Courses.updateOne(
+      { 
+        _id: courseId, 
+        "lessons._id": lessonId 
+      },
+      {
+        $pull: {
+          "lessons.$.chapters": { _id: chapterId }
+        }
+      }
+    );
     res
       .status(200)
       .json({ message: "Chapter Deleted successfully", status: true });

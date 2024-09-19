@@ -117,7 +117,7 @@ function CoursePage() {
             ))}
           </Grid>
         </Box>
-        {/* {course.length === 0 && <TableNoItemComponent />} */}
+        {course.length === 0 && <TableNoItemComponent />}
       </Box>
 
       {open && <Dialogue open={open} handleClose={() => setOpen(false)} />}
