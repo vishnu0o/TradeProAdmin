@@ -38,7 +38,7 @@ function CoursePage() {
 
   useEffect(() => {
     dispatch(courseFindAction());
-  }, []);
+  }, [dispatch,courseCreateSuccess]);
 
   useEffect(() => {
     if (courseFindSuccess) {

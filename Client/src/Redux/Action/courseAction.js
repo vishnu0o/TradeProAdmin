@@ -131,7 +131,7 @@ export const courseUpdateAction = (formData) => async (dispatch, getState) => {
 // courseLesson create Action
 
 export const courseLessonCreateAction =
-  (lesson, id) => async (dispatch, getState) => {
+  (selectedLanguage,lesson, id) => async (dispatch, getState) => {
     try {
       dispatch({ type: COURSE_LESSON_CREATE_REQUEST });
 
@@ -147,7 +147,7 @@ export const courseLessonCreateAction =
 
       let { data } = await axios.post(
         "/course/createLesson",
-        { lesson, id },
+        { selectedLanguage,lesson, id },
         config
       );
 

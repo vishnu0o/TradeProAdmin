@@ -9,8 +9,13 @@ import * as React from "react";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import { styled } from "@mui/system";
 
-export default function InputField({ label,handleChange,value,bgcolor,color }) {
-  
+export default function InputField({
+  label,
+  handleChange,
+  value,
+  bgcolor,
+  color
+}) {
   return (
     <>
       <TextField
@@ -19,13 +24,13 @@ export default function InputField({ label,handleChange,value,bgcolor,color }) {
         variant="filled"
         placeholder={label}
         sx={{
-          bgcolor:bgcolor?bgcolor: "#3F3F46",
+          bgcolor: bgcolor ? bgcolor : "#3F3F46",
           width: "100%",
           borderRadius: "5px",
           "& .MuiInputBase-input": {
-            bgcolor:bgcolor?bgcolor: "#3F3F46",
-            padding:"14px",
-            color:color?color: "#E4E4E7"
+            bgcolor: bgcolor ? bgcolor : "#3F3F46",
+            padding: "14px",
+            color: color ? color : "#E4E4E7"
           },
           "& .MuiInputLabel-root": {
             color: "#E4E4E7"
@@ -50,7 +55,7 @@ export default function InputField({ label,handleChange,value,bgcolor,color }) {
   );
 }
 
-export const DescriptionInputField = ({ placeholder,handleChange,value }) => {
+export const DescriptionInputField = ({ placeholder, handleChange, value }) => {
   const blue = {
     100: "#DAECFF",
     200: "#b6daff",
@@ -113,18 +118,18 @@ export const DescriptionInputField = ({ placeholder,handleChange,value }) => {
   );
 };
 
-export const SelectInputField = ({handleChange,value}) => {
+export const SelectInputField = ({ handleChange, value }) => {
   return (
     <>
       <FormControl
         variant="filled"
         sx={{
           // minWidth: 120,
-          backgroundColor:"#3F3F46",
+          backgroundColor: "#3F3F46",
           width: "100%",
           borderRadius: "4px",
-          color:"#fff",
-          
+          color: "#fff",
+
           "& .MuiFilledInput-root": {
             backgroundColor: "#3F3F46",
             color: "#fff",
@@ -148,16 +153,16 @@ export const SelectInputField = ({handleChange,value}) => {
           id="demo-simple-select-filled-label"
           sx={{ color: "#E4E4E7" }}
         >
-           Select language
-         </InputLabel>
+          Select language
+        </InputLabel>
 
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
           multiple
-            placeholder="Select language"
-            value={value}
-            onChange={handleChange}
+          placeholder="Select language"
+          value={value}
+          onChange={handleChange}
         >
           <MenuItem value="">
             <em>None</em>
@@ -166,7 +171,6 @@ export const SelectInputField = ({handleChange,value}) => {
           <MenuItem value={"Hindi"}>Hindi</MenuItem>
           <MenuItem value={"Malayalam"}>Malayalam</MenuItem>
           <MenuItem value={"Tamil"}>Tamil</MenuItem>
-
         </Select>
       </FormControl>
     </>

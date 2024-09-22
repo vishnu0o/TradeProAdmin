@@ -69,7 +69,7 @@ function Dialogue({ handleClose, open }) {
     if (typeOfCourse === "") {
       errors.typeOfCourse = "Type of course is required";
     }
-    if (selectedLanguages.length == 0) {
+    if (selectedLanguages == "") {
       errors.selectedLanguages = "Language is required";
     }
     console.log(errors, "errorserrorserrors");
@@ -79,14 +79,13 @@ function Dialogue({ handleClose, open }) {
 
   const handleSubmit = () => {
     if (validate()) {
-    
       const formData = new FormData();
       formData.append("preview", previewVideo);
       formData.append("title", title);
       formData.append("author", courseAuthor);
       formData.append("price", coursePrice),
-        formData.append("courseDuration", courseDuration),
-        formData.append("description", courseDescription);
+      formData.append("courseDuration", courseDuration),
+      formData.append("description", courseDescription);
       formData.append("courseType", typeOfCourse);
       formData.append("language", selectedLanguages);
       dispatch(courseCreateAction(formData));
@@ -303,8 +302,6 @@ function Dialogue({ handleClose, open }) {
             <Typography sx={{ color: "red" }}>
               {error?.courseDuration}
             </Typography>
-
-           
 
             <Box sx={{ mt: 1 }}>
               <Typography

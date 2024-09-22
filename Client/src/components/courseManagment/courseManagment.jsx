@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import TopicUploadComponent from "../ReusableComponent/TopicUploadComponent";
 import InputField, { SelectInputField } from "../ReusableComponent/Input";
+import { makeStyles } from "@material-ui/core/styles";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { useLocation } from "react-router-dom";
 import { courseFindAction } from "../../Redux/Action/courseAction";
@@ -29,10 +30,30 @@ import { useDispatch, useSelector } from "react-redux";
 import EditCourse from "./editCourse.jsx";
 import Lessons from "./Lessons.jsx";
 import Certificates from "./Certificates.jsx";
+import { Chip } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    marginBottom: theme.spacing(2),
+    marginTop: "8px"
+  },
+  hoverElement: {
+    "&:hover": {
+      color: "#FE0B7A" // Set the hover color
+    },
+    "&.clicked": {
+      backgroundColor: "#FE0B7A",
+      color: "white"
+    }
+  }
+}));
 
 const ManageCoursePage = () => {
+  const classes = useStyles();
+
   const dispatch = useDispatch();
 
+  const [clicked, setClicked] = React.useState("");
   const [openAddLesson, setOpenAddLesson] = useState(false);
 
   const [selectedCourse, setSelectedCourse] = useState({});
@@ -63,7 +84,7 @@ const ManageCoursePage = () => {
     return state.courseChapterCreate;
   });
 
-  let { courseChapterUpdateLoading,courseChapterUpdateSuccess } = useSelector(
+  let { courseChapterUpdateLoading, courseChapterUpdateSuccess } = useSelector(
     (state) => {
       return state.courseChapterUpdate;
     }
@@ -83,7 +104,7 @@ const ManageCoursePage = () => {
   }, [courseFindSuccess]);
   return (
     <>
-      {courseChapterCreateLoading ||courseChapterUpdateLoading ? (
+      {courseChapterCreateLoading || courseChapterUpdateLoading ? (
         <Backdrop
           sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
           open={courseChapterCreateLoading}
@@ -91,7 +112,9 @@ const ManageCoursePage = () => {
         >
           <CircularProgress color="inherit" />
         </Backdrop>
-      ):""}
+      ) : (
+        ""
+      )}
       <div
         style={{
           padding: "20px 30px",
@@ -104,7 +127,7 @@ const ManageCoursePage = () => {
           <img src="./home.svg" alt="img" />
           <p style={{ color: "#7D8995" }}>{location.pathname}</p>
         </div>
-        {selectedCourseItem?.name === "Lessons" && (
+        {/* {selectedCourseItem?.name === "Lessons" && (
           <Button
             onClick={() => setOpenAddLesson(true)}
             sx={{
@@ -122,7 +145,7 @@ const ManageCoursePage = () => {
             <ClearAllIcon sx={{ mr: 1 }} />
             Add Lesson
           </Button>
-        )}
+        )} */}
 
         <Grid container gap={0} width={"100%"}>
           {/* Sidebar */}
@@ -210,18 +233,36 @@ const ManageCoursePage = () => {
           {/* Main Content */}
           <Grid item xs={12} sm={9} md={9} style={{ paddingLeft: 10 }}>
             <div
-              style={{ backgroundColor: selectedCourseItem?.name === manageCourseItems[2].name ? "transparent":"#fff", borderRadius: 10, padding: 20 }}
+              style={{
+                backgroundColor:
+                  selectedCourseItem?.name === manageCourseItems[2].name ||
+                  selectedCourseItem?.name === manageCourseItems[1].name
+                    ? "transparent"
+                    : "#fff",
+                borderRadius: 10,
+                padding: 20
+              }}
             >
               {selectedCourseItem?.name === manageCourseItems[0].name ? (
                 <EditCourse selectedCourse={selectedCourse} />
               ) : selectedCourseItem?.name === manageCourseItems[1].name ? (
+                // <Chip
+                //   className={`${classes.hoverElement} ${
+                //     clicked === "Exam Tips" ? "clicked" : ""
+                //   }`}
+                //   label="Exam Tips"
+                //   component="a"
+                //   clickable
+                //   sx={{ m: 1 }}
+                //   onClick={() => setClicked("Exam Tips")}
+                // />
                 <Lessons
                   openAddLesson={openAddLesson}
                   setOpenAddLesson={() => setOpenAddLesson()}
                   selectedCourse={selectedCourse}
                 />
               ) : selectedCourseItem?.name === manageCourseItems[2].name ? (
-                <Certificates/>
+                <Certificates />
               ) : null}
             </div>
           </Grid>

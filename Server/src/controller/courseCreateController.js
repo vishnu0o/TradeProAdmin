@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import Courses from "../database/Course.js";
 import { uploadFileToS3 } from "../utils/S3Upload.js";
 import fs from "fs";
+import Lesson from "../database/courseLesson.js";
+import Chapter from "../database/courseChapter.js";
 
 // @desc    Course create
 // @route   post /api/course/createCourse
@@ -11,6 +13,8 @@ export const createCourseController = asyncHandler(async (req, res) => {
   try {
     const formData = req.body;
     console.log(req.file, "formDataformDataformData");
+    console.log(formData, "formdataaaaaaaaaaaaaaaaaaaaaaaaa");
+
     let uploadedVideoUrl;
     if (req.file) {
       const fileData = fs.readFileSync(req.file.path);
@@ -73,7 +77,10 @@ export const findCourseController = asyncHandler(async (req, res) => {
 export const findOneCourseController = asyncHandler(async (req, res) => {
   try {
     const { id } = req.query;
-    const findCourse = await Courses.findOne({ _id: id });
+    const findCourse = await Lesson.find({ courseId: id })
+      .populate("courseId")
+      .populate("chapters")
+      .exec();
     res
       .status(200)
       .json({ message: "course find successfully", data: findCourse });
@@ -135,21 +142,16 @@ export const editCourseController = asyncHandler(async (req, res) => {
 
 export const createCourseLessonController = asyncHandler(async (req, res) => {
   try {
-    const { lesson, id } = req.body;
+    const { selectedLanguage, lesson, id } = req.body;
 
-    const findCourse = await Courses.findOne({ _id: id });
-
-    const createLesson = await Courses.updateOne(
-      { _id: id },
-      {
-        $push: {
-          lessons: { lessonName: lesson }
-        }
-      }
-    );
+    const createLesson = await Lesson.create({
+      courseId: id,
+      lessonLanguage: selectedLanguage,
+      lessonName: lesson
+    });
     res
       .status(200)
-      .json({ message: "Lesson created successfully", status: findCourse });
+      .json({ message: "Lesson created successfully", status: true });
   } catch (error) {
     console.log(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });
@@ -195,10 +197,15 @@ export const deleteCourseLessonController = asyncHandler(async (req, res) => {
     );
 
     if (updateCourse.nModified === 0) {
-      return res.status(404).json({ message: "Lesson not found or already deleted", status: false });
+      return res.status(404).json({
+        message: "Lesson not found or already deleted",
+        status: false
+      });
     }
 
-    res.status(200).json({ message: "Lesson deleted successfully", status: true });
+    res
+      .status(200)
+      .json({ message: "Lesson deleted successfully", status: true });
   } catch (error) {
     console.error(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });
@@ -211,7 +218,6 @@ export const deleteCourseLessonController = asyncHandler(async (req, res) => {
 
 export const createCourseChapterController = asyncHandler(async (req, res) => {
   try {
-    // const { chapterTitle,chapterVideo, id,lessonId } = req.body;
     const formData = req.body;
     console.log(formData, "formDataaaaaaaaaaaaaaaaaaaa");
     let uploadedVideoUrl;
@@ -227,18 +233,15 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
         contentType
       );
     }
+    const lesson = await Lesson.findOne({_id:formData?.lessonId})
+    const createChapter = await Chapter.create({
+      lessonId: formData?.lessonId,
+      title: formData?.chapterTitle,
+      video: uploadedVideoUrl
+    });
+    lesson?.chapters?.push(createChapter?._id)
+    await lesson.save();
 
-    const createChapter = await Courses.updateOne(
-      { _id: formData?.id, "lessons._id": formData?.lessonId },
-      {
-        $push: {
-          "lessons.$.chapters": {
-            title: formData?.chapterTitle,
-            video: uploadedVideoUrl
-          }
-        }
-      }
-    );
     res
       .status(200)
       .json({ message: "Chapter created successfully", status: true });
@@ -269,23 +272,26 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
         contentType
       );
     }
-    const updateLesson = await Courses.updateOne(
+    const updateLesson = await CourseLessonsAndChapters.updateOne(
       {
-        _id: formData?.courseId,
+        courseId: formData?.courseId,
         "lessons._id": formData?.lessonId,
         "lessons.chapters._id": formData?.chapterId
       },
       {
         $set: {
-          "lessons.$[lesson].chapters.$[chapter].title": formData?.updatedChapter,
-          "lessons.$[lesson].chapters.$[chapter].video": uploadedVideoUrl ? uploadedVideoUrl : formData?.updatedVideo
+          "lessons.$[lesson].chapters.$[chapter].title":
+            formData?.updatedChapter,
+          "lessons.$[lesson].chapters.$[chapter].video": uploadedVideoUrl
+            ? uploadedVideoUrl
+            : formData?.updatedVideo
         }
       },
       {
         arrayFilters: [
-          { "lesson._id": formData?.lessonId },   // Match lesson by ID
-          { "chapter._id": formData?.chapterId }, // Match chapter by ID
-        ],
+          { "lesson._id": formData?.lessonId }, // Match lesson by ID
+          { "chapter._id": formData?.chapterId } // Match chapter by ID
+        ]
       }
     );
     res
@@ -303,11 +309,11 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
 
 export const deleteCourseChapterController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId, chapterId, } = req.query;
+    const { courseId, lessonId, chapterId } = req.query;
     const updateCourse = await Courses.updateOne(
-      { 
-        _id: courseId, 
-        "lessons._id": lessonId 
+      {
+        _id: courseId,
+        "lessons._id": lessonId
       },
       {
         $pull: {

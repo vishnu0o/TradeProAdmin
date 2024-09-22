@@ -29,7 +29,8 @@ export default function AddLessonPopup({
   setOpenAddLesson,
   lessonHeading,
   lessonSubHeading,
-  placeHolder
+  placeHolder,
+  selectedLanguage
 }) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -59,7 +60,7 @@ export default function AddLessonPopup({
   };
   const handleSubmit = () => {
     if (validate()) {
-      dispatch(courseLessonCreateAction(lessonTitle, id));
+      dispatch(courseLessonCreateAction(selectedLanguage,lessonTitle, id));
       handleClose();
     }
   };
