@@ -3,6 +3,7 @@ import {
     createCourseChapterController,
   createCourseController,
   createCourseLessonController,
+  CreateQuizController,
   deleteCourseChapterController,
   deleteCourseLessonController,
   editCourseController,
@@ -32,6 +33,12 @@ router.route("/deleteLesson").delete(deleteCourseLessonController);
 router.route("/createChapter").post(upload.single("chapter"),createCourseChapterController);
 router.route("/updateChapter").put(upload.single("updatedVideo"),updateCourseChapterController);
 router.route("/deleteChapter").delete(deleteCourseChapterController);
+
+
+router.route("/CreateQuiz").post(CreateQuizController);
+
+
+
 
 
 

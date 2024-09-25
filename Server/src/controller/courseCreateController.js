@@ -233,13 +233,13 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
         contentType
       );
     }
-    const lesson = await Lesson.findOne({_id:formData?.lessonId})
+    const lesson = await Lesson.findOne({ _id: formData?.lessonId });
     const createChapter = await Chapter.create({
       lessonId: formData?.lessonId,
       title: formData?.chapterTitle,
       video: uploadedVideoUrl
     });
-    lesson?.chapters?.push(createChapter?._id)
+    lesson?.chapters?.push(createChapter?._id);
     await lesson.save();
 
     res
@@ -324,6 +324,36 @@ export const deleteCourseChapterController = asyncHandler(async (req, res) => {
     res
       .status(200)
       .json({ message: "Chapter Deleted successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
+
+// @desc    Course Quiz Create
+// @route   post /api/course/CreateQuiz
+// @access  user
+
+export const CreateQuizController = asyncHandler(async (req, res) => {
+  try {
+    const { lessonId, question, options, answer } = req.body;
+
+    const createQuiz = await Lesson.findOne({ _id: lessonId });
+
+    if (!createQuiz) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
+
+    const newQuiz = {
+      question,
+      options,
+      answerdedd
+    };
+
+    createQuiz.quiz.push(newQuiz);
+    await createQuiz.save();
+
+    return res.status(200).json({ message: "Quiz added successfully", lesson });
   } catch (error) {
     console.log(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });

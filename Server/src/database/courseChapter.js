@@ -1,30 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ChapterSchema = new mongoose.Schema({
   lessonId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Lessons',
-    required: true,
+    ref: "Lessons",
+    required: true
   },
   title: {
     type: String,
-    required: true,
+    required: true
   },
   video: {
-    type: String,
-  },
-  quiz: [
-    {
-      question: {
-        type: String,
-      },
-      options: [String],
-      answer: {
-        type: String,
-      }
-    }
-  ]
+    type: String
+  }
 });
 
-const Chapter = mongoose.model('Chapters', ChapterSchema);
+const Chapter = mongoose.model("Chapters", ChapterSchema);
 export default Chapter;

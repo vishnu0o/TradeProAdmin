@@ -14,6 +14,17 @@ const LessonSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  quiz: [
+    {
+      question: {
+        type: String,
+      },
+      options: [String],
+      answer: {
+        type: String,
+      }
+    }
+  ],
   chapters: [
     {
       type: mongoose.Schema.Types.ObjectId,
