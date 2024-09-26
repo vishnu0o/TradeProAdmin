@@ -19,7 +19,6 @@ const Header = () => {
         <IconButton aria-label="notifications" sx={{ mr: 2 }}>
           <BsBell size={30} color="black" />
         </IconButton>
-
         <Avatar alt="Remy Sharp" src="./avatar.png" />
       </Box>
     </Box>

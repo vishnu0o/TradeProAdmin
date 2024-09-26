@@ -15,6 +15,9 @@ import {
   COURSE_FINDONE_ERR,
   COURSE_FINDONE_REQUEST,
   COURSE_FINDONE_SUCCESS,
+  COURSE_LANGUAGE_FINDONE_ERR,
+  COURSE_LANGUAGE_FINDONE_REQUEST,
+  COURSE_LANGUAGE_FINDONE_SUCCESS,
   COURSE_LESSON_CREATE_ERR,
   COURSE_LESSON_CREATE_REQUEST,
   COURSE_LESSON_CREATE_SUCCESS,
@@ -99,6 +102,32 @@ export const courseFindOneAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     console.log(error.response, "error.response");
     dispatch({ type: COURSE_FINDONE_ERR, payload: error.response?.data });
+  }
+};
+
+
+// courselanguageFindOne Action
+
+export const courselanguageFindOneAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COURSE_LANGUAGE_FINDONE_REQUEST });
+
+    let isUserExist = localStorage.getItem("loginInfo")
+      ? JSON.parse(localStorage.getItem("loginInfo"))
+      : null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${isUserExist?.token}`
+      }
+    };
+
+    let { data } = await axios.get(`/course/findOneCourselanguage?id=${id}`, config);
+
+    dispatch({ type: COURSE_LANGUAGE_FINDONE_SUCCESS, payload: data });
+  } catch (error) {
+    console.log(error.response, "error.response");
+    dispatch({ type: COURSE_LANGUAGE_FINDONE_ERR, payload: error.response?.data });
   }
 };
 

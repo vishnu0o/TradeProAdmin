@@ -70,6 +70,28 @@ export const findCourseController = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Course title findOne
+// @route   post /api/course/findOneCourselanguage
+// @access  user
+
+export const findOneCourselanguageController = asyncHandler(
+  async (req, res) => {
+    try {
+      const { id } = req.query;
+      const findCourse = await Courses.findOne({ _id: id });
+      res
+        .status(200)
+        .json({
+          message: "course language find successfully",
+          data: findCourse
+        });
+    } catch (error) {
+      console.log(error, "error");
+      res.status(500).json({ message: "Something went wrong", data: error });
+    }
+  }
+);
+
 // @desc    Course FindOne
 // @route   post /api/course/findOneCourse
 // @access  user
@@ -144,11 +166,15 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
   try {
     const { selectedLanguage, lesson, id } = req.body;
 
+    const course = await Courses.findOne({ _id: id });
     const createLesson = await Lesson.create({
       courseId: id,
       lessonLanguage: selectedLanguage,
       lessonName: lesson
     });
+
+    course?.lessons?.push(createLesson?._id);
+    await course.save();
     res
       .status(200)
       .json({ message: "Lesson created successfully", status: true });

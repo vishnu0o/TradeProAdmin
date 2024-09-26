@@ -17,6 +17,9 @@ import {
   COURSE_FINDONE_ERR,
   COURSE_FINDONE_REQUEST,
   COURSE_FINDONE_SUCCESS,
+  COURSE_LANGUAGE_FINDONE_ERR,
+  COURSE_LANGUAGE_FINDONE_REQUEST,
+  COURSE_LANGUAGE_FINDONE_SUCCESS,
   COURSE_LESSON_CREATE_ERR,
   COURSE_LESSON_CREATE_REQUEST,
   COURSE_LESSON_CREATE_SUCCESS,
@@ -105,6 +108,30 @@ export const courseFindOneReducer = (state = {}, action) => {
   }
 };
 
+
+export const courselanguageFindOneReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_LANGUAGE_FINDONE_REQUEST:
+      return {
+        ...state,
+        courselanguageFindOneLoading: true
+      };
+    case COURSE_LANGUAGE_FINDONE_SUCCESS:
+      return {
+        ...state,
+        courselanguageFindOneLoading: false,
+        courselanguageFindOneSuccess: action.payload
+      };
+    case COURSE_LANGUAGE_FINDONE_ERR:
+      return {
+        ...state,
+        courselanguageFindOneLoading: false,
+        courselanguageFindOneErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
 
 export const courseUpdateReducer = (state = {}, action) => {
   switch (action.type) {

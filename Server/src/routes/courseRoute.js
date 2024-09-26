@@ -9,6 +9,7 @@ import {
   editCourseController,
   findCourseController,
   findOneCourseController,
+  findOneCourselanguageController,
   updateCourseChapterController,
   updateCourseLessonController
 } from "../controller/courseCreateController.js";
@@ -17,8 +18,9 @@ const router = express.Router();
 
 router
   .route("/createCourse")
-  .post(upload.single("preview"), createCourseController);
+  .post(upload.single("preview"),createCourseController);
 router.route("/findCourse").get(findCourseController);
+router.route("/findOneCourselanguage").get(findOneCourselanguageController);
 router.route("/findOneCourse").get(findOneCourseController);
 router
   .route("/editCourse")

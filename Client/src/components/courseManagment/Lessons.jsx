@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   courseChapterDeleteAction,
   courseFindOneAction,
+  courselanguageFindOneAction,
   courseLessonDeleteAction
 } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
@@ -91,6 +92,10 @@ export default function ControlledAccordions(
     return state.courseFindOne;
   });
 
+  let { courselanguageFindOneSuccess } = useSelector((state) => {
+    return state.courselanguageFindOne;
+  });
+
   let { courseLessonCreateSuccess } = useSelector((state) => {
     return state.courseLessonCreate;
   });
@@ -131,6 +136,7 @@ export default function ControlledAccordions(
 
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
+    dispatch(courselanguageFindOneAction(id))
   }, [
     dispatch,
     courseLessonCreateSuccess,
@@ -146,13 +152,13 @@ export default function ControlledAccordions(
     }
   }, [courseFindOneSuccess,clicked]);
 
+  console.log(courselanguageFindOneSuccess, "courselanguageFindOneSuccesscourselanguageFindOneSuccess");
   console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
-  console.log(lesson, "lessonnnnnnnnnnnnn");
 
 
   return (
     <>
-      {courseFindOneSuccess?.data[0]?.courseId?.language?.map((value) => (
+      {courselanguageFindOneSuccess?.data?.language?.map((value) => (
         <Chip
           className={`${classes.hoverElement} ${
             clicked === value ? "clicked" : ""
