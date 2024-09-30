@@ -152,7 +152,7 @@ const SidebarComponent = ({ mouseOnEnter, mouseOnLeave, isHover }) => {
           </List>
         </Box>
 
-        <List style={{ padding: "10px !important", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <List style={{ marginBottom:"10px", padding: "10px !important", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <ListItem
             style={{
               width: "90%",

@@ -1,0 +1,9 @@
+.chapters_div{
+    /* background: #00000033; */
+    max-height: 314px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+}
