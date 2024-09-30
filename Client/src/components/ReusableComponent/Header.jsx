@@ -1,15 +1,14 @@
 import React from "react";
 import { Box, Typography, IconButton, Avatar } from "@mui/material";
 import { BsBell } from "react-icons/bs";
-
 const Header = () => {
   return (
-    <Box className="bg-white shadow-md h-[98px] flex items-center px-4 static">
+    <Box className="bg-white shadow-md h-[98px] flex items-center px-4 sticky top-0 z-50">
       <Typography
         sx={{
           fontSize: "28px",
           fontWeight: 500,
-          color: "#556987"
+          color: "#556987",
         }}
       >
         Hi,
