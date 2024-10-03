@@ -28,6 +28,7 @@ import AddQuizPopup from "../PopupComponents/AddQuizPopup";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import TableNoItemComponent from "../ReusableComponent/TableNoItemComponent";
 import EditQuizPopup from "../PopupComponents/EditQuizPopup";
+import "./style.css"
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -352,8 +353,9 @@ export default function ControlledAccordions(
                     Add Quiz
                   </Button>
                 </div>
+                <div className="chapters_div">
                 {item.chapters.map((chapter, index) => (
-                  <Box sx={{ mt: 2 }} key={index}>
+                  <Box key={index}>
                     <Typography
                       sx={{
                         fontWeight: "bold",
@@ -533,6 +535,7 @@ export default function ControlledAccordions(
                     </Box>
                   </Box>
                 ))}
+                </div>
               </AccordionDetails>
             </Accordion>
           ))}

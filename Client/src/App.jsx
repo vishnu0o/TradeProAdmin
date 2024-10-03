@@ -55,7 +55,8 @@ function App() {
             <Box
               sx={{
                 width: "100%",
-                minHeight: "100vh",
+                height: "100vh",
+                overflowY:"scroll",
                 backgroundColor: "#f4f4f4"
               }}
             >
