@@ -79,12 +79,10 @@ export const findOneCourselanguageController = asyncHandler(
     try {
       const { id } = req.query;
       const findCourse = await Courses.findOne({ _id: id });
-      res
-        .status(200)
-        .json({
-          message: "course language find successfully",
-          data: findCourse
-        });
+      res.status(200).json({
+        message: "course language find successfully",
+        data: findCourse
+      });
     } catch (error) {
       console.log(error, "error");
       res.status(500).json({ message: "Something went wrong", data: error });
@@ -190,13 +188,13 @@ export const createCourseLessonController = asyncHandler(async (req, res) => {
 
 export const updateCourseLessonController = asyncHandler(async (req, res) => {
   try {
-    const { lesson, courseId, lessonId } = req.body;
+    const { lesson, lessonId } = req.body;
 
-    const updateLesson = await Courses.updateOne(
-      { _id: courseId, "lessons._id": lessonId },
+    const updateLesson = await Lesson.updateOne(
+      { _id: lessonId },
       {
         $set: {
-          "lessons.$.lessonName": lesson
+          lessonName: lesson
         }
       }
     );
@@ -215,12 +213,9 @@ export const updateCourseLessonController = asyncHandler(async (req, res) => {
 
 export const deleteCourseLessonController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId } = req.query;
+    const { lessonId } = req.query;
 
-    const updateCourse = await Courses.updateOne(
-      { _id: courseId },
-      { $pull: { lessons: { _id: lessonId } } }
-    );
+    const updateCourse = await Lesson.deleteOne({ _id: lessonId });
 
     if (updateCourse.nModified === 0) {
       return res.status(404).json({
@@ -228,7 +223,6 @@ export const deleteCourseLessonController = asyncHandler(async (req, res) => {
         status: false
       });
     }
-
     res
       .status(200)
       .json({ message: "Lesson deleted successfully", status: true });
@@ -298,26 +292,15 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
         contentType
       );
     }
-    const updateLesson = await CourseLessonsAndChapters.updateOne(
+    const updateLesson = await Chapter.updateOne(
       {
-        courseId: formData?.courseId,
-        "lessons._id": formData?.lessonId,
-        "lessons.chapters._id": formData?.chapterId
+        _id: formData?.chapterId
       },
       {
         $set: {
-          "lessons.$[lesson].chapters.$[chapter].title":
-            formData?.updatedChapter,
-          "lessons.$[lesson].chapters.$[chapter].video": uploadedVideoUrl
-            ? uploadedVideoUrl
-            : formData?.updatedVideo
+          title: formData?.updatedChapter,
+          video: uploadedVideoUrl ? uploadedVideoUrl : formData?.updatedVideo
         }
-      },
-      {
-        arrayFilters: [
-          { "lesson._id": formData?.lessonId }, // Match lesson by ID
-          { "chapter._id": formData?.chapterId } // Match chapter by ID
-        ]
       }
     );
     res
@@ -335,18 +318,10 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
 
 export const deleteCourseChapterController = asyncHandler(async (req, res) => {
   try {
-    const { courseId, lessonId, chapterId } = req.query;
-    const updateCourse = await Courses.updateOne(
-      {
-        _id: courseId,
-        "lessons._id": lessonId
-      },
-      {
-        $pull: {
-          "lessons.$.chapters": { _id: chapterId }
-        }
-      }
-    );
+    const { chapterId } = req.query;
+    const updateCourse = await Chapter.deleteOne({
+      _id: chapterId
+    });
     res
       .status(200)
       .json({ message: "Chapter Deleted successfully", status: true });
@@ -362,7 +337,10 @@ export const deleteCourseChapterController = asyncHandler(async (req, res) => {
 
 export const CreateQuizController = asyncHandler(async (req, res) => {
   try {
-    const { lessonId, question, options, answer } = req.body;
+    let { lessonId, question, options, answer } = req.body;
+    console.log(req.body, "bodyyyyyyyyyyyyyyyyyy");
+
+    options = options.map((value) => value.option);
 
     const createQuiz = await Lesson.findOne({ _id: lessonId });
 
@@ -373,13 +351,37 @@ export const CreateQuizController = asyncHandler(async (req, res) => {
     const newQuiz = {
       question,
       options,
-      answerdedd
+      answer
     };
 
     createQuiz.quiz.push(newQuiz);
     await createQuiz.save();
 
-    return res.status(200).json({ message: "Quiz added successfully", lesson });
+    return res
+      .status(200)
+      .json({ message: "Quiz added successfully", status: true });
+  } catch (error) {
+    console.log(error, "error");
+    res.status(500).json({ message: "Something went wrong", data: error });
+  }
+});
+
+// @desc    Course Quiz Delete
+// @route   post /api/course/DeleteQuiz
+// @access  user
+
+export const deleteQuizController = asyncHandler(async (req, res) => {
+  try {
+    let { lessonId, quizId } = req.query;
+
+    const updatedLesson = await Lesson.findByIdAndUpdate(
+      lessonId,
+      { $pull: { quiz: { _id: quizId } } },
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ message: "Quiz deleted successfully", status: true });
   } catch (error) {
     console.log(error, "error");
     res.status(500).json({ message: "Something went wrong", data: error });

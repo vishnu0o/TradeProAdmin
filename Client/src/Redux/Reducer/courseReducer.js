@@ -29,6 +29,12 @@ import {
   COURSE_LESSON_UPDATE_ERR,
   COURSE_LESSON_UPDATE_REQUEST,
   COURSE_LESSON_UPDATE_SUCCESS,
+  COURSE_QUIZ_CREATE_ERR,
+  COURSE_QUIZ_CREATE_REQUEST,
+  COURSE_QUIZ_CREATE_SUCCESS,
+  COURSE_QUIZ_DELETE_ERR,
+  COURSE_QUIZ_DELETE_REQUEST,
+  COURSE_QUIZ_DELETE_SUCCESS,
   COURSE_UPDATE_ERR,
   COURSE_UPDATE_REQUEST,
   COURSE_UPDATE_SUCCESS
@@ -300,6 +306,56 @@ export const courseChapterDeleteReducer = (state = {}, action) => {
         ...state,
         courseChapterDeleteLoading: false,
         courseChapterDeleteErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+
+export const courseQuizCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_QUIZ_CREATE_REQUEST:
+      return {
+        ...state,
+        courseQuizCreateLoading: true
+      };
+    case COURSE_QUIZ_CREATE_SUCCESS:
+      return {
+        ...state,
+        courseQuizCreateLoading: false,
+        courseQuizCreateSuccess: action.payload
+      };
+    case COURSE_QUIZ_CREATE_ERR:
+      return {
+        ...state,
+        courseQuizCreateLoading: false,
+        courseQuizCreateErr: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+
+export const courseQuizDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COURSE_QUIZ_DELETE_REQUEST:
+      return {
+        ...state,
+        courseQuizDeleteLoading: true
+      };
+    case COURSE_QUIZ_DELETE_SUCCESS:
+      return {
+        ...state,
+        courseQuizDeleteLoading: false,
+        courseQuizDeleteSuccess: action.payload
+      };
+    case COURSE_QUIZ_DELETE_ERR:
+      return {
+        ...state,
+        courseQuizDeleteLoading: false,
+        courseQuizDeleteErr: action.payload
       };
     default:
       return state;

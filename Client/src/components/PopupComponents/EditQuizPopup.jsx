@@ -24,7 +24,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function AddQuizPopup({lessonId, openAddQuiz, setOpenAddQuiz }) {
+export default function EditQuizPopup({lessonId, openAddQuiz, setOpenAddQuiz,quizData }) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
@@ -91,12 +91,30 @@ export default function AddQuizPopup({lessonId, openAddQuiz, setOpenAddQuiz }) {
     setError(errors);
     return Object.keys(errors).length === 0;
   };
+
+  useEffect(()=>{
+    setQuestion(quizData?.question)
+    const addedOptions = quizData?.options
+    console.log(addedOptions,"addedOptionsssssssssssssssssss")
+    const updatedArray = options.map((item, index) => ({
+      ...item,
+      option: addedOptions[index] || "" 
+    }));
+    console.log(updatedArray,"updatedArayyyyyyyyyyyyyyyy")
+
+    setOptions(updatedArray);
+    // const updatedOptions = [...options];
+    // updatedOptions[index].option = quizData?.options;
+    // setOptions(updatedOptions);
+  },[quizData])
   const handleSubmit = () => {
     if (validate()) {
       dispatch(courseQuizCreateAction(lessonId,question,options,answer))
       handleClose();
     }
   };
+
+  console.log(quizData,"quizDataaaaaaaaaaaaaaaa")
 
   return (
     <>
@@ -116,7 +134,7 @@ export default function AddQuizPopup({lessonId, openAddQuiz, setOpenAddQuiz }) {
         open={openAddQuiz}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Quiz
+          Edit Quiz
         </DialogTitle>
         <IconButton
           aria-label="close"

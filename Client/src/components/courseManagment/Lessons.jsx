@@ -17,7 +17,8 @@ import {
   courseChapterDeleteAction,
   courseFindOneAction,
   courselanguageFindOneAction,
-  courseLessonDeleteAction
+  courseLessonDeleteAction,
+  courseQuizDeleteAction
 } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
 import EditChapterPopup from "../PopupComponents/EditChapterPopup";
@@ -26,6 +27,7 @@ import EditLessonPopup from "../PopupComponents/EditLessonPopup";
 import AddQuizPopup from "../PopupComponents/AddQuizPopup";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import TableNoItemComponent from "../ReusableComponent/TableNoItemComponent";
+import EditQuizPopup from "../PopupComponents/EditQuizPopup";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -64,10 +66,14 @@ export default function ControlledAccordions(
   const [openEditChapter, setOpenEditChapter] = React.useState(false);
   const [openEditLesson, setOpenEditLesson] = React.useState(false);
   const [openAddQuiz, setOpenAddQuiz] = React.useState(false);
+  const [openEditQuiz, setOpenEditQuiz] = React.useState(false);
+
 
   const [lesson, setLesson] = React.useState([]);
   const [lessonId, setLessonId] = React.useState("");
+  const [quiz, setQuiz] = React.useState({});
   const [chapter, setChapter] = React.useState({});
+
   const [selectedLesson, setSelectedLesson] = React.useState({});
   const [clicked, setClicked] = React.useState("");
 
@@ -75,15 +81,20 @@ export default function ControlledAccordions(
   console.log({ chapter });
 
   const handleChange = (panel) => (event, isExpanded) => {
+    console.log(isExpanded, "isExpandedisExpanded");
     setExpanded(isExpanded ? panel : false);
   };
 
   const handleLessonDelete = (lessonId) => {
     dispatch(courseLessonDeleteAction(id, lessonId));
   };
-  const handleChapterDelete = (chapterId, lessonId) => {
+  const handleChapterDelete = (chapterId) => {
     console.log({ chapterId });
-    dispatch(courseChapterDeleteAction(id, lessonId, chapterId));
+    dispatch(courseChapterDeleteAction(chapterId));
+  };
+  const handleQuizDelete = (lessonId,quizId) => {
+    console.log({ quizId });
+    dispatch(courseQuizDeleteAction(lessonId,quizId));
   };
 
   // Reducer ::::::::::::::::::
@@ -124,6 +135,19 @@ export default function ControlledAccordions(
     return state.courseChapterDelete;
   });
 
+  let { courseQuizCreateLoading, courseQuizCreateSuccess } = useSelector(
+    (state) => {
+      return state.courseQuizCreate;
+    }
+  );
+
+  let { courseQuizDeleteLoading, courseQuizDeleteSuccess } = useSelector(
+    (state) => {
+      return state.courseQuizDelete;
+    }
+  );
+  
+
   React.useEffect(() => {
     // Ensure the video starts playing when the video URL is available
     if (videoRef.current) {
@@ -136,25 +160,34 @@ export default function ControlledAccordions(
 
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
-    dispatch(courselanguageFindOneAction(id))
+    dispatch(courselanguageFindOneAction(id));
   }, [
     dispatch,
     courseLessonCreateSuccess,
     courseChapterCreateSuccess,
     courseLessonUpdateSuccess,
-    courseLessonDeleteSuccess,
-    courseChapterUpdateSuccess
+    courseLessonDeleteSuccess,    
+    courseChapterUpdateSuccess,
+    courseQuizCreateSuccess,
+    courseQuizDeleteSuccess
   ]);
 
   React.useEffect(() => {
     if (courseFindOneSuccess) {
-      setLesson(courseFindOneSuccess?.data?.filter((value)=>value?.lessonLanguage == clicked));
+      setLesson(
+        courseFindOneSuccess?.data?.filter(
+          (value) => value?.lessonLanguage == clicked
+        )
+      );
     }
-  }, [courseFindOneSuccess,clicked]);
+  }, [courseFindOneSuccess, clicked]);
 
-  console.log(courselanguageFindOneSuccess, "courselanguageFindOneSuccesscourselanguageFindOneSuccess");
+  console.log(
+    courselanguageFindOneSuccess,
+    "courselanguageFindOneSuccesscourselanguageFindOneSuccess"
+  );
   console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
-
+  console.log(lesson, "lessonlessonlesson");
 
   return (
     <>
@@ -383,9 +416,98 @@ export default function ControlledAccordions(
                         Edit
                       </Button>
                       <Button
-                        onClick={() =>
-                          handleChapterDelete(chapter._id, item?._id)
-                        }
+                        onClick={() => handleChapterDelete(chapter._id)}
+                        sx={{
+                          minWidth: "0",
+                          width: "43px",
+                          height: "35px",
+                          color: "#D7503D",
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          background: "transparent",
+                          boxShadow: "none ",
+                          textTransform: "capitalize",
+                          borderRadius: "50%",
+                          padding: "0",
+
+                          "&:hover": {
+                            boxShadow: "none ",
+                            backgroundColor: "transparent"
+                          }
+                        }}
+                        variant="contained"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Box>
+                  </Box>
+                ))}
+
+                {item.quiz.map((quiz, index) => (
+                  <Box sx={{ mt: 2 }} key={index}>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "14px"
+                      }}
+                    >
+                      Quiz {index + 1}
+                    </Typography>
+                    <Box
+                      sx={{
+                        mt: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1
+                      }}
+                    >
+                      {/* <video
+                        ref={videoRef}
+                        width="100"
+                        muted
+                        loop
+                        style={{
+                          borderRadius: "10px",
+                          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)"
+                        }}
+                      >
+                        <source src={chapter.video} type="video/mp4" />
+                      </video> */}
+                      <Typography
+                        sx={{
+                          color: "#1C232D",
+                          fontSize: "13px",
+                          background: "#F5F6F7",
+                          width: "100%",
+                          p: 1,
+                          borderRadius: "5px",
+                          textTransform: "capitalize"
+                        }}
+                      >
+                        {quiz.question}
+                      </Typography>
+                      {/* <Button
+                        onClick={() => {
+                          setOpenEditQuiz(true);
+                          setLessonId(item._id);
+                          setQuiz(quiz);
+                        }}
+                        sx={{
+                          color: "#000",
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          background: "#6255FA30",
+                          textTransform: "capitalize",
+                          "&:hover": {
+                            backgroundColor: "rgba(98, 85, 250, 0.5)"
+                          }
+                        }}
+                        variant="contained"
+                      >
+                        Edit
+                      </Button> */}
+                      <Button
+                        onClick={() => handleQuizDelete(item._id,quiz._id)}
                         sx={{
                           minWidth: "0",
                           width: "43px",
@@ -442,6 +564,12 @@ export default function ControlledAccordions(
             openAddQuiz={openAddQuiz}
             setOpenAddQuiz={setOpenAddQuiz}
           />
+            {/* <EditQuizPopup
+            lessonId={lessonId}
+            quizData={quiz}
+            openAddQuiz={openEditQuiz}
+            setOpenAddQuiz={setOpenEditQuiz}
+          /> */}
         </div>
       )}
     </>

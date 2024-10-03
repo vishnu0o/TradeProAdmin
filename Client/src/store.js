@@ -13,6 +13,8 @@ import {
   courseLessonCreateReducer,
   courseLessonDeleteReducer,
   courseLessonUpdateReducer,
+  courseQuizCreateReducer,
+  courseQuizDeleteReducer,
   courseUpdateReducer
 } from "./Redux/Reducer/courseReducer";
 
@@ -30,7 +32,9 @@ const appReducer = combineReducers({
   courseLessonDelete: courseLessonDeleteReducer,
   courseChapterCreate: courseChapterCreateReducer,
   courseChapterUpdate: courseChapterUpdateReducer,
-  courseChapterDelete: courseChapterDeleteReducer
+  courseChapterDelete: courseChapterDeleteReducer,
+  courseQuizCreate:courseQuizCreateReducer,
+  courseQuizDelete:courseQuizDeleteReducer
 });
 
 export const store = createStore(appReducer, applyMiddleware(...Middleware));
