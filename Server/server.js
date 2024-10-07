@@ -6,6 +6,8 @@ import cors from "cors";
 import sanitizedConfig from "./src/config.js";
 import authRoute from "./src/routes/authRoute.js";
 import courseRoute from "./src/routes/courseRoute.js"
+import referralRoute from "./src/routes/referralRoute.js"
+
 
 import connectDb from "./src/database/config.js";
 
@@ -36,6 +38,9 @@ app.use(cors());
 
 app.use("/api/auth", authRoute);
 app.use("/api/course", courseRoute);
+app.use("/api/referral", referralRoute);
+
+
 
 
 

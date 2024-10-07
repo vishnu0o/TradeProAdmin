@@ -27,6 +27,15 @@ export const createCourseController = asyncHandler(async (req, res) => {
         folderName,
         contentType
       );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
     }
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString("en-GB", {
@@ -131,6 +140,15 @@ export const editCourseController = asyncHandler(async (req, res) => {
         folderName,
         contentType
       );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
     }
     const updateCourse = await Courses.updateOne(
       { _id: formData?.id },
@@ -252,6 +270,15 @@ export const createCourseChapterController = asyncHandler(async (req, res) => {
         folderName,
         contentType
       );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
     }
     const lesson = await Lesson.findOne({ _id: formData?.lessonId });
     const createChapter = await Chapter.create({
@@ -291,6 +318,15 @@ export const updateCourseChapterController = asyncHandler(async (req, res) => {
         folderName,
         contentType
       );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
     }
     const updateLesson = await Chapter.updateOne(
       {

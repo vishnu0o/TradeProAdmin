@@ -428,6 +428,9 @@ function Dialogue({ handleClose, open }) {
               <SelectInputField
                 handleChange={(e) => setSelectedLanguages(e.target.value)}
                 value={selectedLanguages}
+                data={["English","Hindi","Malayalam","Tamil"]}
+                multiple={true}
+                label={"Select language"}
               />
             </Box>
             <Typography sx={{ color: "red" }}>
