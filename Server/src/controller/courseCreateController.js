@@ -14,7 +14,6 @@ export const createCourseController = asyncHandler(async (req, res) => {
     const formData = req.body;
     console.log(req.file, "formDataformDataformData");
     console.log(formData, "formdataaaaaaaaaaaaaaaaaaaaaaaaa");
-
     let uploadedVideoUrl;
     if (req.file) {
       const fileData = fs.readFileSync(req.file.path);
@@ -52,7 +51,8 @@ export const createCourseController = asyncHandler(async (req, res) => {
       courseType: formData?.courseType,
       publishedYear: formattedDate,
       courseDuration: formData?.courseDuration,
-      language: formData?.language.split(",")
+      language: formData?.language.split(","),
+      rating:0
     });
     res
       .status(200)

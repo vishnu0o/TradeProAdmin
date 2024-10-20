@@ -228,11 +228,11 @@ const ReferralsManagement = () => {
         placeHolder={"Add Level Commision"}
       />
 
-      <EditLessonPopup
+      {/* <EditLessonPopup
         lesson={selectedLesson}
         openEditLesson={openEditLesson}
         setOpenEditLesson={setOpenEditLesson}
-      />
+      /> */}
     </>
   );
 };
