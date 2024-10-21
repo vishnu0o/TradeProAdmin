@@ -17,7 +17,7 @@ import {
   courseChapterDeleteAction,
   courseFindOneAction,
   courselanguageFindOneAction,
-  courseLessonDeleteAction
+  courseLessonDeleteAction,
 } from "../../Redux/Action/courseAction";
 import { useLocation } from "react-router-dom";
 import EditChapterPopup from "../PopupComponents/EditChapterPopup";
@@ -26,24 +26,22 @@ import EditLessonPopup from "../PopupComponents/EditLessonPopup";
 import AddQuizPopup from "../PopupComponents/AddQuizPopup";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import TableNoItemComponent from "../ReusableComponent/TableNoItemComponent";
-import "./style.css"
-
-
+import "./style.css";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     marginBottom: theme.spacing(2),
-    marginTop: "8px"
+    marginTop: "8px",
   },
   hoverElement: {
     "&:hover": {
-      color: "#FE0B7A" // Set the hover color
+      color: "#FE0B7A", // Set the hover color
     },
     "&.clicked": {
       backgroundColor: "#FE0B7A",
-      color: "white"
-    }
-  }
+      color: "white",
+    },
+  },
 }));
 
 export default function ControlledAccordions(
@@ -111,17 +109,13 @@ export default function ControlledAccordions(
     return state.courseLessonDelete;
   });
 
-  let { courseChapterCreateLoading, courseChapterCreateSuccess } = useSelector(
-    (state) => {
-      return state.courseChapterCreate;
-    }
-  );
+  let { courseChapterCreateLoading, courseChapterCreateSuccess } = useSelector((state) => {
+    return state.courseChapterCreate;
+  });
 
-  let { courseChapterUpdateLoading, courseChapterUpdateSuccess } = useSelector(
-    (state) => {
-      return state.courseChapterUpdate;
-    }
-  );
+  let { courseChapterUpdateLoading, courseChapterUpdateSuccess } = useSelector((state) => {
+    return state.courseChapterUpdate;
+  });
 
   let { courseChapterDeleteSuccess } = useSelector((state) => {
     return state.courseChapterDelete;
@@ -139,33 +133,30 @@ export default function ControlledAccordions(
 
   React.useEffect(() => {
     dispatch(courseFindOneAction(id));
-    dispatch(courselanguageFindOneAction(id))
+    dispatch(courselanguageFindOneAction(id));
   }, [
     dispatch,
     courseLessonCreateSuccess,
     courseChapterCreateSuccess,
     courseLessonUpdateSuccess,
     courseLessonDeleteSuccess,
-    courseChapterUpdateSuccess
+    courseChapterUpdateSuccess,
   ]);
 
   React.useEffect(() => {
     if (courseFindOneSuccess) {
-      setLesson(courseFindOneSuccess?.data?.filter((value)=>value?.lessonLanguage == clicked));
+      setLesson(courseFindOneSuccess?.data?.filter((value) => value?.lessonLanguage == clicked));
     }
-  }, [courseFindOneSuccess,clicked]);
+  }, [courseFindOneSuccess, clicked]);
 
   console.log(courselanguageFindOneSuccess, "courselanguageFindOneSuccesscourselanguageFindOneSuccess");
   console.log(courseFindOneSuccess, "courseFindOneSuccesscourseFindOneSuccess");
-
 
   return (
     <>
       {courselanguageFindOneSuccess?.data?.language?.map((value) => (
         <Chip
-          className={`${classes.hoverElement} ${
-            clicked === value ? "clicked" : ""
-          }`}
+          className={`${classes.hoverElement} ${clicked === value ? "clicked" : ""}`}
           label={value}
           component="a"
           clickable
@@ -179,7 +170,7 @@ export default function ControlledAccordions(
             style={{
               display: "flex",
               justifyContent: "flex-end", // Align button to the right
-              padding: "10px 0" // Optional padding
+              padding: "10px 0", // Optional padding
             }}
           >
             <Button
@@ -191,8 +182,8 @@ export default function ControlledAccordions(
                 ml: "auto", // Optional, can be removed due to flexbox usage
                 mb: 1,
                 "&:hover": {
-                  backgroundColor: "#231F20" // Maintain the same background color on hover
-                }
+                  backgroundColor: "#231F20", // Maintain the same background color on hover
+                },
               }}
               variant="contained"
             >
@@ -208,7 +199,7 @@ export default function ControlledAccordions(
                 background: "#000",
                 mb: 1,
                 borderRadius: 1,
-                boxShadow: "0 0 10px #ddd"
+                boxShadow: "0 0 10px #ddd",
               }}
               key={index}
               expanded={expanded === `panel${index + 1}`}
@@ -221,8 +212,7 @@ export default function ControlledAccordions(
                 id={`panel${index + 1}bh-header`}
               >
                 <Typography sx={{ width: "90%", flexShrink: 0 }}>
-                  <MenuIcon sx={{ mr: 1 }} /> Lesson {index + 1} -{" "}
-                  {item.lessonName}
+                  <MenuIcon sx={{ mr: 1 }} /> Lesson {index + 1} - {item.lessonName}
                 </Typography>
                 <Button
                   onClick={() => {
@@ -244,8 +234,8 @@ export default function ControlledAccordions(
 
                     "&:hover": {
                       boxShadow: "none ",
-                      backgroundColor: "rgba(225, 225, 225, .2)"
-                    }
+                      backgroundColor: "rgba(225, 225, 225, .2)",
+                    },
                   }}
                   variant="contained"
                 >
@@ -268,8 +258,8 @@ export default function ControlledAccordions(
 
                     "&:hover": {
                       boxShadow: "none ",
-                      backgroundColor: "rgba(252, 0, 5, .2)"
-                    }
+                      backgroundColor: "rgba(252, 0, 5, .2)",
+                    },
                   }}
                   variant="contained"
                 >
@@ -282,7 +272,7 @@ export default function ControlledAccordions(
                     width: "100%",
                     display: "flex",
                     justifyContent: "end",
-                    padding: "10px"
+                    padding: "10px",
                   }}
                 >
                   <Button
@@ -295,8 +285,8 @@ export default function ControlledAccordions(
                       textTransform: "capitalize",
                       mr: 1,
                       "&:hover": {
-                        backgroundColor: "#231F20"
-                      }
+                        backgroundColor: "#231F20",
+                      },
                     }}
                     variant="contained"
                   >
@@ -313,8 +303,8 @@ export default function ControlledAccordions(
                       textTransform: "capitalize",
                       mr: 1,
                       "&:hover": {
-                        backgroundColor: "#231F20"
-                      }
+                        backgroundColor: "#231F20",
+                      },
                     }}
                     variant="contained"
                   >
@@ -323,98 +313,99 @@ export default function ControlledAccordions(
                   </Button>
                 </div>
                 <div className="chapters_div">
-                {item.chapters.map((chapter, index) => (
-                  <Box key={index}>
-                    <Typography
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: "14px"
-                      }}
-                    >
-                      Chapter {index + 1}
-                    </Typography>
-                    <Box
-                      sx={{
-                        mt: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1
-                      }}
-                    >
-                      <video
-                        ref={videoRef}
-                        width="100"
-                        muted
-                        loop
-                        style={{
-                          borderRadius: "10px",
-                          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)"
-                        }}
-                      >
-                        <source src={chapter.video} type="video/mp4" />
-                      </video>
+                  {item.chapters.map((chapter, index) => (
+                    <Box key={index}>
                       <Typography
                         sx={{
-                          color: "#1C232D",
-                          fontSize: "13px",
-                          background: "#F5F6F7",
-                          width: "100%",
-                          p: 1,
-                          borderRadius: "5px",
-                          textTransform: "capitalize"
+                          fontWeight: "bold",
+                          fontSize: "14px",
                         }}
                       >
-                        {chapter.title}
+                        Chapter {index + 1}
                       </Typography>
-                      <Button
-                        onClick={() => {
-                          setOpenEditChapter(true);
-                          setLessonId(item._id);
-                          setChapter(chapter);
-                        }}
+                      <Box
                         sx={{
-                          color: "#000",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          background: "#6255FA30",
-                          textTransform: "capitalize",
-                          "&:hover": {
-                            backgroundColor: "rgba(98, 85, 250, 0.5)"
-                          }
+                          mt: 1,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
                         }}
-                        variant="contained"
                       >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          handleChapterDelete(chapter._id, item?._id)
-                        }
-                        sx={{
-                          minWidth: "0",
-                          width: "43px",
-                          height: "35px",
-                          color: "#D7503D",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          background: "transparent",
-                          boxShadow: "none ",
-                          textTransform: "capitalize",
-                          borderRadius: "50%",
-                          padding: "0",
-
-                          "&:hover": {
+                        <video
+                          ref={videoRef}
+                          width="100"
+                          muted
+                          loop
+                          style={{
+                            borderRadius: "10px",
+                            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                          }}
+                        >
+                          <source
+                            src={chapter.video}
+                            type="video/mp4"
+                          />
+                        </video>
+                        <Typography
+                          sx={{
+                            color: "#1C232D",
+                            fontSize: "13px",
+                            background: "#F5F6F7",
+                            width: "100%",
+                            p: 1,
+                            borderRadius: "5px",
+                            textTransform: "capitalize",
+                          }}
+                        >
+                          {chapter.title}
+                        </Typography>
+                        <Button
+                          onClick={() => {
+                            setOpenEditChapter(true);
+                            setLessonId(item._id);
+                            setChapter(chapter);
+                          }}
+                          sx={{
+                            color: "#000",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            background: "#6255FA30",
+                            textTransform: "capitalize",
+                            "&:hover": {
+                              backgroundColor: "rgba(98, 85, 250, 0.5)",
+                            },
+                          }}
+                          variant="contained"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => handleChapterDelete(chapter._id, item?._id)}
+                          sx={{
+                            minWidth: "0",
+                            width: "43px",
+                            height: "35px",
+                            color: "#D7503D",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            background: "transparent",
                             boxShadow: "none ",
-                            backgroundColor: "transparent"
-                          }
-                        }}
-                        variant="contained"
-                      >
-                        <DeleteIcon />
-                      </Button>
+                            textTransform: "capitalize",
+                            borderRadius: "50%",
+                            padding: "0",
+
+                            "&:hover": {
+                              boxShadow: "none ",
+                              backgroundColor: "transparent",
+                            },
+                          }}
+                          variant="contained"
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
+                  ))}
                 </div>
               </AccordionDetails>
             </Accordion>
