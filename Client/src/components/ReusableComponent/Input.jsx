@@ -118,7 +118,7 @@ export const DescriptionInputField = ({ placeholder, handleChange, value }) => {
   );
 };
 
-export const SelectInputField = ({ handleChange, value }) => {
+export const SelectInputField = ({ handleChange, value, data, multiple,label }) => {
   return (
     <>
       <FormControl
@@ -153,13 +153,13 @@ export const SelectInputField = ({ handleChange, value }) => {
           id="demo-simple-select-filled-label"
           sx={{ color: "#E4E4E7" }}
         >
-          Select language
+          {label}
         </InputLabel>
 
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          multiple
+          multiple={multiple}
           placeholder="Select language"
           value={value}
           onChange={handleChange}
@@ -167,10 +167,9 @@ export const SelectInputField = ({ handleChange, value }) => {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={"English"}>English</MenuItem>
-          <MenuItem value={"Hindi"}>Hindi</MenuItem>
-          <MenuItem value={"Malayalam"}>Malayalam</MenuItem>
-          <MenuItem value={"Tamil"}>Tamil</MenuItem>
+          {data?.map((item) => (
+            <MenuItem value={item}>{item}</MenuItem>
+          ))}
         </Select>
       </FormControl>
     </>

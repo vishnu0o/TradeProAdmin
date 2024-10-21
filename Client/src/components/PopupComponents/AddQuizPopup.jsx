@@ -13,7 +13,7 @@ import InputField from "../ReusableComponent/Input";
 import { SubmitButton } from "../ReusableComponent/Button";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { courseLessonCreateAction } from "../../Redux/Action/courseAction";
+import { courseLessonCreateAction, courseQuizCreateAction } from "../../Redux/Action/courseAction";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -24,14 +24,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function AddQuizPopup({ openAddQuiz, setOpenAddQuiz }) {
+export default function AddQuizPopup({lessonId, openAddQuiz, setOpenAddQuiz }) {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
 
   // Destructure query parameters
+
   const id = query.get("id");
   const dispatch = useDispatch();
-
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([
     { sl: 1, option: "", correct: false },
@@ -39,8 +39,9 @@ export default function AddQuizPopup({ openAddQuiz, setOpenAddQuiz }) {
     { sl: 3, option: "", correct: false },
     { sl: 4, option: "", correct: false },
   ]);
+  const [answer,setAnswer] = useState('')
 
-  console.log("optionsss=", options);
+  console.log("optionsss", options);
   const [error, setError] = useState({});
 
   const handleChangeOptions = (value, index) => {
@@ -50,6 +51,7 @@ export default function AddQuizPopup({ openAddQuiz, setOpenAddQuiz }) {
   };
 
   const handleCorrectAnswer = (value) => {
+    setAnswer(value)
     const updatedOptions = options
       .map((item) => {
         return {
@@ -91,7 +93,7 @@ export default function AddQuizPopup({ openAddQuiz, setOpenAddQuiz }) {
   };
   const handleSubmit = () => {
     if (validate()) {
-      // dispatch(courseLessonCreateAction(lessonTitle,id))
+      dispatch(courseQuizCreateAction(lessonId,question,options,answer))
       handleClose();
     }
   };

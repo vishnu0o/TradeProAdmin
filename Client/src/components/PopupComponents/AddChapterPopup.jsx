@@ -70,6 +70,8 @@ export default function AddChapterPopup({
       formData.append("id", id);
       formData.append("lessonId", lessonId);
       dispatch(courseChapterCreateAction(formData));
+      setChapterTitle("")
+      setChapterVideo()
       handleClose();
     }
   };

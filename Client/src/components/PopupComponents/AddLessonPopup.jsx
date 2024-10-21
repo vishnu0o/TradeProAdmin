@@ -9,11 +9,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { Fragment, useEffect, useState } from "react";
 import { Box, Divider } from "@mui/material";
-import InputField from "../ReusableComponent/Input";
+import InputField, { SelectInputField } from "../ReusableComponent/Input";
 import { SubmitButton } from "../ReusableComponent/Button";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { courseLessonCreateAction } from "../../Redux/Action/courseAction";
+import { referralLevelCreateAction } from "../../Redux/Action/referralAction";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -58,12 +59,38 @@ export default function AddLessonPopup({
     setError(errors);
     return Object.keys(errors).length === 0;
   };
+
+  
+  const referralValidate = () => {
+    let errors = {};
+
+    if (level === "") {
+      errors.level = "Level is required";
+    }
+
+    if (lessonTitle === "") {
+      errors.lessonTitle = "commission is required";
+    }
+
+    console.log(errors, "errorserrorserrors");
+    setError(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = () => {
     if (validate()) {
-      dispatch(courseLessonCreateAction(selectedLanguage,lessonTitle, id));
+      dispatch(courseLessonCreateAction(selectedLanguage, lessonTitle, id));
       handleClose();
     }
   };
+
+  const handleReferralSubmit = ()=>{
+    console.log("vfvsdvsdvssvs")
+    if (referralValidate()) {
+      dispatch(referralLevelCreateAction(level, lessonTitle));
+      handleClose();
+    }
+  }
 
   return (
     <>
@@ -123,41 +150,67 @@ export default function AddLessonPopup({
               {lessonSubHeading ? lessonSubHeading : "Lesson Title"}
             </Typography>
             {lessonHeading == "Levels" && (
-                <Box sx={{mb:1}}>
+              <Box sx={{ mb: 1 }}>
+                {/* <InputField
+                  label={"Level"}
+                  handleChange={(e) => setLevel(e.target.value)}
+                  value={level}
+                /> */}
 
-
-                    <InputField
-                      label={"Level"}
-                      handleChange={(e) => setLevel(e.target.value)}
-                      value={level}
-                    />
-
-                </Box>
+                <SelectInputField
+                  handleChange={(e) => setLevel(e.target.value)}
+                  value={level}
+                  data={["Level 1", "Level 2"]}
+                  multiple={false}
+                  label={"Select Level"}
+                />
+              </Box>
             )}
             <InputField
-              label={placeHolder?placeHolder:"Lesson title"}
+              label={placeHolder ? placeHolder : "Lesson title"}
               handleChange={(e) => setLessonTitle(e.target.value)}
               value={lessonTitle}
             />
           </Box>
           <Typography sx={{ color: "red" }}>{error?.lessonTitle}</Typography>
         </DialogContent>
-        <DialogActions
-          style={{
-            padding: "0 17px 30px "
-          }}
-        >
-          <SubmitButton
-            title={"Save"}
-            component="addCourse"
-            widthSize="100%"
-            bgColor="#6255FA"
-            borderRadius="4px"
-            heightSize="52px"
-            type="click"
-            handleSubmit={handleSubmit}
-          />
-        </DialogActions>
+        {lessonHeading !== "Levels" && (
+          <DialogActions
+            style={{
+              padding: "0 17px 30px "
+            }}
+          >
+            <SubmitButton
+              title={"Save"}
+              component="addCourse"
+              widthSize="100%"
+              bgColor="#6255FA"
+              borderRadius="4px"
+              heightSize="52px"
+              type="click"
+              handleSubmit={handleSubmit}
+            />
+          </DialogActions>
+        )}
+
+        {lessonHeading == "Levels" && (
+          <DialogActions
+            style={{
+              padding: "0 17px 30px "
+            }}
+          >
+            <SubmitButton
+              title={"Save"}
+              component="addCourse"
+              widthSize="100%"
+              bgColor="#6255FA"
+              borderRadius="4px"
+              heightSize="52px"
+              type="click"
+              handleSubmit={handleReferralSubmit}
+            />
+          </DialogActions>
+        )}
       </BootstrapDialog>
     </>
   );

@@ -231,7 +231,6 @@ const EditCourse = ({ selectedCourse }) => {
       </Box>
       <Typography sx={{ color: "red" }}>{error?.title}</Typography>
 
-      
       <Box sx={{ mt: 2 }}>
         <Typography
           sx={{
@@ -374,12 +373,15 @@ const EditCourse = ({ selectedCourse }) => {
         <SelectInputField
           handleChange={(e) => setSelectedLanguages(e.target.value)}
           value={selectedLanguages || selectedCourse.language}
+          data={["English", "Hindi", "Malayalam", "Tamil"]}
+          multiple={true}
+          label={"Select language"}
         />
       </Box>
       <Typography sx={{ color: "red" }}>{error?.selectedLanguages}</Typography>
       <Box sx={{ mt: 1 }}>
         <SubmitButton
-          title={"Add Course"}
+          title={"Update Course"}
           component="addCourse"
           widthSize="100%"
           bgColor="#6255FA"

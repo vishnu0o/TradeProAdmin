@@ -27,6 +27,12 @@ import {
   COURSE_LESSON_UPDATE_ERR,
   COURSE_LESSON_UPDATE_REQUEST,
   COURSE_LESSON_UPDATE_SUCCESS,
+  COURSE_QUIZ_CREATE_ERR,
+  COURSE_QUIZ_CREATE_REQUEST,
+  COURSE_QUIZ_CREATE_SUCCESS,
+  COURSE_QUIZ_DELETE_ERR,
+  COURSE_QUIZ_DELETE_REQUEST,
+  COURSE_QUIZ_DELETE_SUCCESS,
   COURSE_UPDATE_ERR,
   COURSE_UPDATE_REQUEST,
   COURSE_UPDATE_SUCCESS
@@ -193,7 +199,7 @@ export const courseLessonCreateAction =
 // courseLesson update Action
 
 export const courseLessonUpdateAction =
-  (lesson, courseId, lessonId) => async (dispatch, getState) => {
+  (lesson, lessonId) => async (dispatch, getState) => {
     try {
       dispatch({ type: COURSE_LESSON_UPDATE_REQUEST });
 
@@ -209,7 +215,7 @@ export const courseLessonUpdateAction =
 
       let { data } = await axios.put(
         "/course/updateLesson",
-        { lesson, courseId, lessonId },
+        { lesson, lessonId },
         config
       );
 
@@ -322,7 +328,7 @@ export const courseChapterUpdateAction =
 // courseChapter delete Action
 
 export const courseChapterDeleteAction =
-  (courseId, lessonId, chapterId) => async (dispatch, getState) => {
+  (chapterId) => async (dispatch, getState) => {
     try {
       dispatch({ type: COURSE_CHAPTER_UPDATE_REQUEST });
 
@@ -337,7 +343,7 @@ export const courseChapterDeleteAction =
       };
 
       let { data } = await axios.delete(
-        `/course/deleteChapter?courseId=${courseId}&&lessonId=${lessonId}&&chapterId=${chapterId}`,
+        `/course/deleteChapter?chapterId=${chapterId}`,
         config
       );
 
@@ -350,3 +356,71 @@ export const courseChapterDeleteAction =
       });
     }
   };
+
+
+
+  // course quiz create Action
+
+export const courseQuizCreateAction =
+(lessonId, question, options, answer) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COURSE_QUIZ_CREATE_REQUEST });
+
+    let isUserExist = localStorage.getItem("loginInfo")
+      ? JSON.parse(localStorage.getItem("loginInfo"))
+      : null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${isUserExist?.token}`
+      }
+    };
+
+    let { data } = await axios.post(
+      '/course/CreateQuiz',{lessonId, question, options, answer},
+      config
+    );
+
+    dispatch({ type: COURSE_QUIZ_CREATE_SUCCESS, payload: data });
+  } catch (error) {
+    console.log(error.response, "error.response");
+    dispatch({
+      type: COURSE_QUIZ_CREATE_ERR,
+      payload: error.response?.data
+    });
+  }
+};
+
+
+  // course quiz Delete Action
+
+  export const courseQuizDeleteAction =
+  (lessonId,quizId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: COURSE_QUIZ_DELETE_REQUEST });
+  
+      let isUserExist = localStorage.getItem("loginInfo")
+        ? JSON.parse(localStorage.getItem("loginInfo"))
+        : null;
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${isUserExist?.token}`
+        }
+      };
+  
+      let { data } = await axios.delete(
+        `/course/DeleteQuiz?lessonId=${lessonId}&quizId=${quizId}`,
+        config
+      );
+  
+      dispatch({ type: COURSE_QUIZ_DELETE_SUCCESS, payload: data });
+    } catch (error) {
+      console.log(error.response, "error.response");
+      dispatch({
+        type: COURSE_QUIZ_DELETE_ERR,
+        payload: error.response?.data
+      });
+    }
+  };
+  

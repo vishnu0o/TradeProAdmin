@@ -13,8 +13,11 @@ import {
   courseLessonCreateReducer,
   courseLessonDeleteReducer,
   courseLessonUpdateReducer,
+  courseQuizCreateReducer,
+  courseQuizDeleteReducer,
   courseUpdateReducer
 } from "./Redux/Reducer/courseReducer";
+import { referralLeveCreateReducer, referralLevelFindReducer } from "./Redux/Reducer/referralReducer";
 
 let Middleware = [thunk];
 
@@ -30,7 +33,12 @@ const appReducer = combineReducers({
   courseLessonDelete: courseLessonDeleteReducer,
   courseChapterCreate: courseChapterCreateReducer,
   courseChapterUpdate: courseChapterUpdateReducer,
-  courseChapterDelete: courseChapterDeleteReducer
+  courseChapterDelete: courseChapterDeleteReducer,
+  courseQuizCreate:courseQuizCreateReducer,
+  courseQuizDelete:courseQuizDeleteReducer,
+  referralLeveCreate:referralLeveCreateReducer,
+  referralLevelFind:referralLevelFindReducer
+
 });
 
 export const store = createStore(appReducer, applyMiddleware(...Middleware));

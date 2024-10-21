@@ -6,6 +6,7 @@ import {
   CreateQuizController,
   deleteCourseChapterController,
   deleteCourseLessonController,
+  deleteQuizController,
   editCourseController,
   findCourseController,
   findOneCourseController,
@@ -38,6 +39,8 @@ router.route("/deleteChapter").delete(deleteCourseChapterController);
 
 
 router.route("/CreateQuiz").post(CreateQuizController);
+router.route("/DeleteQuiz").delete(deleteQuizController);
+
 
 
 
