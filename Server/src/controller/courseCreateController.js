@@ -12,14 +12,22 @@ import Chapter from "../database/courseChapter.js";
 export const createCourseController = asyncHandler(async (req, res) => {
   try {
     const formData = req.body;
-    console.log(req.file, "formDataformDataformData");
+    const previewFile = req.files["preview"] ? req.files["preview"][0] : null;
+    const thumbnailFile = req.files["thumbnail"]
+      ? req.files["thumbnail"][0]
+      : null;
+
+    // Handle the files as needed
     console.log(formData, "formdataaaaaaaaaaaaaaaaaaaaaaaaa");
+
     let uploadedVideoUrl;
-    if (req.file) {
-      const fileData = fs.readFileSync(req.file.path);
-      const fileName = `TradeProCourseVideo${req.file.filename}`;
+    let uploadedImageUrl;
+
+    if (previewFile) {
+      const fileData = fs.readFileSync(previewFile.path);
+      const fileName = `TradeProCourseVideo${previewFile.filename}`;
       const folderName = "PreviewVideo";
-      const contentType = req.file.mimetype;
+      const contentType = previewFile.mimetype;
       uploadedVideoUrl = await uploadFileToS3(
         fileData,
         fileName,
@@ -28,7 +36,28 @@ export const createCourseController = asyncHandler(async (req, res) => {
       );
 
       // Remove the file from the local filesystem after successful upload
-      fs.unlink(req.file.path, (err) => {
+      fs.unlink(previewFile.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
+    }
+    if (thumbnailFile) {
+      const fileData = fs.readFileSync(thumbnailFile.path);
+      const fileName = `TradeProCourseImage${thumbnailFile.filename}`;
+      const folderName = "PreviewImage";
+      const contentType = thumbnailFile.mimetype;
+      uploadedImageUrl = await uploadFileToS3(
+        fileData,
+        fileName,
+        folderName,
+        contentType
+      );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(thumbnailFile.path, (err) => {
         if (err) {
           console.error("Error deleting the file from local storage:", err);
         } else {
@@ -44,6 +73,7 @@ export const createCourseController = asyncHandler(async (req, res) => {
     });
     const createCourse = await Courses.create({
       previewVideo: uploadedVideoUrl,
+      thumbnailImage: uploadedImageUrl,
       title: formData?.title,
       author: formData?.author,
       price: formData?.price,
@@ -52,7 +82,7 @@ export const createCourseController = asyncHandler(async (req, res) => {
       publishedYear: formattedDate,
       courseDuration: formData?.courseDuration,
       language: formData?.language.split(","),
-      rating:0
+      rating: 0
     });
     res
       .status(200)
@@ -126,14 +156,18 @@ export const findOneCourseController = asyncHandler(async (req, res) => {
 export const editCourseController = asyncHandler(async (req, res) => {
   try {
     const formData = req.body;
-    console.log(req.file, "formDataformDataformData");
+    const previewFile = req.files["preview"] ? req.files["preview"][0] : null;
+    const thumbnailFile = req.files["thumbnail"]
+      ? req.files["thumbnail"][0]
+      : null;
     console.log(formData, "BODYYYYYYYYYYYY");
     let uploadedVideoUrl;
-    if (req.file) {
-      const fileData = fs.readFileSync(req.file.path);
-      const fileName = `TradeProCourseVideo${req.file.filename}`;
+    let uploadedImageUrl;
+    if (previewFile) {
+      const fileData = fs.readFileSync(previewFile.path);
+      const fileName = `TradeProCourseVideo${previewFile.filename}`;
       const folderName = "PreviewVideo";
-      const contentType = req.file.mimetype;
+      const contentType = previewFile.mimetype;
       uploadedVideoUrl = await uploadFileToS3(
         fileData,
         fileName,
@@ -142,7 +176,7 @@ export const editCourseController = asyncHandler(async (req, res) => {
       );
 
       // Remove the file from the local filesystem after successful upload
-      fs.unlink(req.file.path, (err) => {
+      fs.unlink(previewFile.path, (err) => {
         if (err) {
           console.error("Error deleting the file from local storage:", err);
         } else {
@@ -150,6 +184,29 @@ export const editCourseController = asyncHandler(async (req, res) => {
         }
       });
     }
+
+    if (thumbnailFile) {
+      const fileData = fs.readFileSync(thumbnailFile.path);
+      const fileName = `TradeProCourseVideo${thumbnailFile.filename}`;
+      const folderName = "PreviewVideo";
+      const contentType = thumbnailFile.mimetype;
+      uploadedImageUrl = await uploadFileToS3(
+        fileData,
+        fileName,
+        folderName,
+        contentType
+      );
+
+      // Remove the file from the local filesystem after successful upload
+      fs.unlink(thumbnailFile.path, (err) => {
+        if (err) {
+          console.error("Error deleting the file from local storage:", err);
+        } else {
+          console.log("File deleted from local storage successfully");
+        }
+      });
+    }
+
     const updateCourse = await Courses.updateOne(
       { _id: formData?.id },
       {
@@ -157,6 +214,9 @@ export const editCourseController = asyncHandler(async (req, res) => {
           previewVideo: uploadedVideoUrl
             ? uploadedVideoUrl
             : formData?.previewVideo,
+          thumbnailImage: uploadedImageUrl
+            ? uploadedImageUrl
+            : formData?.previewImage,
           title: formData?.title,
           author: formData?.author,
           description: formData?.description,

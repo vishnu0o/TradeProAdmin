@@ -26,6 +26,7 @@ function Dialogue({ handleClose, open }) {
   const [title, setTitle] = useState("");
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [previewVideo, setUploadPreview] = useState();
+  const [previewImage, setUploadImage] = useState();
   const [courseAuthor, setCourseAuthor] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [typeOfCourse, setTypeOfCourse] = useState("Basic");
@@ -50,6 +51,10 @@ function Dialogue({ handleClose, open }) {
 
     if (previewVideo === "") {
       errors.previewVideo = "Preview is required";
+    }
+
+    if (previewImage === "") {
+      errors.previewImage = "Thumbnail image is required";
     }
     if (title === "") {
       errors.title = "Title is required";
@@ -81,11 +86,12 @@ function Dialogue({ handleClose, open }) {
     if (validate()) {
       const formData = new FormData();
       formData.append("preview", previewVideo);
+      formData.append("thumbnail", previewImage);
       formData.append("title", title);
       formData.append("author", courseAuthor);
       formData.append("price", coursePrice),
-      formData.append("courseDuration", courseDuration),
-      formData.append("description", courseDescription);
+        formData.append("courseDuration", courseDuration),
+        formData.append("description", courseDescription);
       formData.append("courseType", typeOfCourse);
       formData.append("language", selectedLanguages);
       dispatch(courseCreateAction(formData));
@@ -164,6 +170,7 @@ function Dialogue({ handleClose, open }) {
               <>
                 <FormLabel
                   sx={{
+                    mb: 2,
                     boxSizing: "border-box",
                     display: "flex",
                     alignItems: "center",
@@ -212,10 +219,80 @@ function Dialogue({ handleClose, open }) {
                 </Typography>
               </>
             ) : (
-              <Box>
+              <Box sx={{ mb: 2 }}>
                 <TopicUploadComponent
                   title="Preview video"
                   handleClick={() => setUploadPreview("")}
+                />
+              </Box>
+            )}
+
+            <Typography
+              sx={{
+                mb: 1,
+                color: "#F1F1F1",
+                fontWeight: 500,
+                fontSize: "14px"
+              }}
+            >
+              Upload Thumbnail Image
+            </Typography>
+            {!previewImage ? (
+              <>
+                <FormLabel
+                  sx={{
+                    boxSizing: "border-box",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    //   maxWidth: "558px",
+                    height: "150px",
+                    cursor: "pointer",
+                    //   border: `1px solid #C4C4C4`,
+                    borderRadius: "4px",
+                    display: "flex",
+                    alignItems: "center",
+                    background: "#3F3F46",
+                    // pl: "14px",
+                    // pr: "8px",
+                    "& img": {
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover"
+                    }
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#E4E4E7",
+                      fontWeight: 500,
+                      fontSize: "17px",
+                      lineHeight: "24px"
+                    }}
+                  >
+                    Upload Image
+                  </Typography>
+                  <input
+                    type="file"
+                    hidden
+                    name="thumbnail"
+                    multiple
+                    onChange={(e) => {
+                      setUploadImage(e.target.files[0]);
+                    }}
+                    accept=".jpg"
+                  />
+                </FormLabel>
+                <Typography sx={{ color: "red" }}>
+                  {error?.previewImage}
+                </Typography>
+              </>
+            ) : (
+              <Box>
+                <TopicUploadComponent
+                  title="Thumbnail image"
+                  handleClick={() => setUploadImage("")}
                 />
               </Box>
             )}
@@ -428,7 +505,7 @@ function Dialogue({ handleClose, open }) {
               <SelectInputField
                 handleChange={(e) => setSelectedLanguages(e.target.value)}
                 value={selectedLanguages}
-                data={["English","Hindi","Malayalam","Tamil"]}
+                data={["English", "Hindi", "Malayalam", "Tamil"]}
                 multiple={true}
                 label={"Select language"}
               />
