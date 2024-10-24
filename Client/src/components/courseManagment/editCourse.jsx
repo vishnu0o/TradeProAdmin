@@ -27,6 +27,7 @@ const EditCourse = ({ selectedCourse }) => {
   const [title, setTitle] = useState("");
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [previewVideo, setUploadPreview] = useState();
+  const [previewImage, setUploadImage] = useState();
   const [courseAuthor, setCourseAuthor] = useState("");
   const [coursePrice, setCoursePrice] = useState("");
 
@@ -78,6 +79,7 @@ const EditCourse = ({ selectedCourse }) => {
     if (validate()) {
       const formData = new FormData();
       formData.append("preview", previewVideo);
+      formData.append("thumbnail", previewImage);
       formData.append("title", title),
         formData.append("author", courseAuthor),
         formData.append("price", coursePrice),
@@ -94,6 +96,7 @@ const EditCourse = ({ selectedCourse }) => {
     setTitle(selectedCourse?.title);
     setSelectedLanguages(selectedCourse?.language);
     setUploadPreview(selectedCourse?.previewVideo);
+    setUploadImage(selectedCourse?.thumbnailImage);
     setCourseAuthor(selectedCourse?.author);
     setCoursePrice(selectedCourse?.price);
     setCourseDescription(selectedCourse?.description);
@@ -138,7 +141,7 @@ const EditCourse = ({ selectedCourse }) => {
       <FormLabel
         sx={{
           boxSizing: "border-box",
-          display: "flex",
+          // display: "flex",
           alignItems: "center",
           justifyContent: "start",
           gap: "20px",
@@ -168,13 +171,16 @@ const EditCourse = ({ selectedCourse }) => {
         </video>
         <Typography
           sx={{
+            mt:2,
             color: "#E4E4E7",
             fontWeight: 500,
             fontSize: "17px",
             lineHeight: "24px",
             backgroundColor: "#6255FA",
             padding: "10px 30px",
-            borderRadius: "10px"
+            borderRadius: "10px",
+            width:"143px"
+
           }}
         >
           Upload file
@@ -186,6 +192,61 @@ const EditCourse = ({ selectedCourse }) => {
           // multiple
           onChange={(e) => setUploadPreview(e.target.files[0])}
           accept=".mp4, .mov, .avi, .mkv, video/*"
+        />
+      </FormLabel>
+
+
+
+      <Typography sx={{ color: "black", mt: 2, mb: 1, fontWeight: "bold" }}>
+        Upload Thumbnail Image
+      </Typography>
+      <FormLabel
+        sx={{
+          boxSizing: "border-box",
+          // display: "flex",
+          alignItems: "center",
+          justifyContent: "start",
+          gap: "20px",
+          width: "100%",
+          cursor: "pointer",
+          borderRadius: "4px"
+        }}
+      >
+        <img
+          src={ typeof previewImage === "string"
+            ? previewImage
+            : previewImage && URL.createObjectURL(previewImage)}
+          width={150}
+          height={150}
+          style={{
+            borderRadius: "10px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)"
+          }}
+        >
+         
+        </img>
+        <Typography
+          sx={{
+            mt:2,
+            color: "#E4E4E7",
+            fontWeight: 500,
+            fontSize: "17px",
+            lineHeight: "24px",
+            backgroundColor: "#6255FA",
+            padding: "10px 30px",
+            borderRadius: "10px",
+            width:"143px"
+          }}
+        >
+          Upload file
+        </Typography>
+        <input
+          type="file"
+          hidden
+          name="previewImage"
+          // multiple
+          onChange={(e) => setUploadImage(e.target.files[0])}
+          accept=".jpg,.png"
         />
       </FormLabel>
 

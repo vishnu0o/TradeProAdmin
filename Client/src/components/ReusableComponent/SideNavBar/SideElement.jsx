@@ -2,21 +2,29 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const SidebarContainer = styled.div`
-  position: fixed;
-  top: 0;
-  width: ${(props) => (props.act ? "0px" : "158px")};
-  padding: ${(props) => (props.act ? "0px" : "1rem 1rem 0 0")};
-  height: 100vh;
-  background-color: var(--first-color);
-  transition: 0.5s;
-  z-index: var(--z-fixed);
-  @media only screen and (min-width: 280px) {
-    padding: 1rem 1rem 0 0;
-    background-color: #141e3c;
-    margin-left: 0px;
-    width: ${(props) => (!props.act ? "250px" : "80px")};
-  }
+  // position: fixed;
+  // height: 100vh;
+  // background-color: var(--first-color);
+  // transition: width 0.5s, padding 0.5s;
+  // z-index: var(--z-fixed);
+  // width: 80px !important;
+
+  // &:hover {
+  //   width: 250px; // Adjust for different screen sizes
+  // }
+  // @media only screen and (min-width: 280px) {
+  //   padding: 1rem 1rem 0 0;
+  //   background-color: red;
+  //   margin-left: 0px;
+  //   width: 80px;
+
+    
+
+  //   transition: width 0.5s, padding 0.5s;
+  // }
+
 `;
+// width: ${(props) => (props.act ? "80px" : "250px")};
 // @media only screen and (max-width: 375px) {
 //   padding: 1rem 1rem 0 0;
 //   background-color: #141E3C;
@@ -25,6 +33,7 @@ export const SidebarContainer = styled.div`
 // }
 
 export const SidebarMenuContainer = styled.div`
+background:#fff;
   height: 100%;
   display: flex;
   flex-direction: column;

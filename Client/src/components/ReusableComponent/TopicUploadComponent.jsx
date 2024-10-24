@@ -60,7 +60,7 @@ function TopicUploadComponent({ img, title, type, handleClick }) {
               
             }}
           >
-            <img src={img ? img : "/TopicVideoPlaceholder.png"} />
+            <img src={img ? img :title=="Thumbnail image"?"/imagePlaceHolder.png": "/TopicVideoPlaceholder.png"} width={100} height={100} />
           </Box>
           <Box
             sx={{

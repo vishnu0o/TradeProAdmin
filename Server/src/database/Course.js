@@ -4,6 +4,9 @@ const Schema = new mongoose.Schema({
   previewVideo: {
     type: String
   },
+  thumbnailImage: {
+    type: String
+  },
   title: {
     type: String
   },
